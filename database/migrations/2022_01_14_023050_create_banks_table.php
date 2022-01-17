@@ -18,7 +18,7 @@ class CreateBanksTable extends Migration
             $table->string('bankname',100);
             $table->timestamps();
 
-            $table->primary(['company_id', 'material']);
+            $table->primary(['bankid']);
         });
     }
 
