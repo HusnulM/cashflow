@@ -18,6 +18,7 @@ class CreateMenusTable extends Migration
             $table->string('name',100);
             $table->string('route',100);
             $table->integer('menugroup');
+            $table->string('type',20);
             $table->timestamps();
         });
     }

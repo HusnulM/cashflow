@@ -16,6 +16,8 @@ class CreateMenugroupsTable extends Migration
         Schema::create('menugroups', function (Blueprint $table) {
             $table->id();
             $table->string('description',50);
+            $table->string('groupicon',50);
+            $table->integer('_index');
             $table->timestamps();
         });
     }

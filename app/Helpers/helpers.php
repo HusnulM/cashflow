@@ -11,15 +11,17 @@ function userMenu(){
                 ->select('menugroup', 'groupname', 'groupicon')
                 ->distinct()
                 ->where('email', Auth::user()->email)
+                ->orWhere('id', Auth::user()->id)
                 ->get();
     return $mnGroups;
 }
 
 function userSubMenu(){
     $mnGroups = DB::table('v_usermenus')
-                ->select('menugroup', 'route', 'menuname')
+                ->select('menugroup', 'route', 'description')
                 ->distinct()
                 ->where('email', Auth::user()->email)
+                ->orWhere('id', Auth::user()->id)
                 ->get();
     return $mnGroups;
 }

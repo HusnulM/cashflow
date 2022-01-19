@@ -24,6 +24,12 @@
   <link rel="stylesheet" href="/plugins/daterangepicker/daterangepicker.css">
   <!-- summernote -->
   <link rel="stylesheet" href="/plugins/summernote/summernote-bs4.min.css">
+
+  @yield('addtional-css')
+
+	<script>
+        var base_url = window.location.origin;
+    </script>
 </head>
 <body class="hold-transition sidebar-mini layout-navbar-fixed layout-footer-fixed layout-fixed">
 <div class="wrapper">
@@ -38,7 +44,7 @@
     <!-- Left navbar links -->
     <ul class="navbar-nav">
       <li class="nav-item">
-        <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
+        <a class="nav-link" data-widget="pushmenu" href="/" role="button"><i class="fas fa-bars"></i></a>
       </li>
     </ul>
 
@@ -84,9 +90,12 @@
             <i class="fas fa-user mr-2"></i> change password
           </a>
           <div class="dropdown-divider"></div>
-          <a href="#" class="dropdown-item">
-            <i class="fas fa-sign-out-alt mr-2"></i> sign out
-          </a>
+          <form id="logout-form" method="post" action="{{ url('logout') }}">
+            @csrf
+            <a href="javascript:{}" class="dropdown-item" onclick="document.getElementById('logout-form').submit();">
+              <i class="fas fa-sign-out-alt mr-2"></i> sign out
+            </a>
+          </form>
           <div class="dropdown-divider"></div>
         </div>
       </li>
@@ -140,6 +149,19 @@
 </script>
 <!-- Bootstrap 4 -->
 <script src="/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="/plugins/datatables/jquery.dataTables.min.js"></script>
+<script src="/plugins/datatables-bs4/js/dataTables.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-responsive/js/dataTables.responsive.min.js"></script>
+<script src="/plugins/datatables-responsive/js/responsive.bootstrap4.min.js"></script>
+<script src="/plugins/datatables-buttons/js/dataTables.buttons.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.bootstrap4.min.js"></script>
+<script src="/plugins/jszip/jszip.min.js"></script>
+<script src="/plugins/pdfmake/pdfmake.min.js"></script>
+<script src="/plugins/pdfmake/vfs_fonts.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.html5.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.print.min.js"></script>
+<script src="/plugins/datatables-buttons/js/buttons.colVis.min.js"></script>
 
 <!-- daterangepicker -->
 <script src="/plugins/moment/moment.min.js"></script>
