@@ -13,9 +13,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('/', function () {
-//     return view('welcome');
-// });
+Route::get('/clear-cache', function() {
+
+    $configCache = Artisan::call('config:cache');
+    $clearCache = Artisan::call('cache:clear');
+    // return what you want
+});
+
 Route::group(['middleware' => 'guest'], function(){
     Route::group(['middleware' => 'revalidate'], function () {
         Route::get('/',              'HomeController@index')->name('login');
@@ -85,8 +89,12 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/delete/{id}', 'Master\PlayerController@delete')->middleware('checkAuth:master/player');
         });
 
-        Route::group(['prefix' => '/transaksi'], function () {
+        Route::group(['prefix' => '/transaksi/topup'], function () {
+            Route::get('/',            'Transaksi\TopupController@index')->middleware('checkAuth:transaksi/topup');
+            Route::post('/save',       'Transaksi\TopupController@save')->middleware('checkAuth:transaksi/topup');
 
+            Route::get('/verify',      'Transaksi\TopupController@verify')->middleware('checkAuth:transaksi/topup/verify');
+            Route::get('/close/{id}',  'Transaksi\TopupController@close')->middleware('checkAuth:transaksi/topup/verify');
         });
 
         Route::group(['prefix' => '/laporan'], function () {
