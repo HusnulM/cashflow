@@ -1,6 +1,6 @@
 @extends('templates/main')
 
-@section('title', 'Verifikasi Topup Coin')
+@section('title', 'Verifikasi Withdraw')
 
 @section('header-content')
 @endsection
@@ -10,7 +10,7 @@
     <div class="col-lg-12 mt-2">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Verifikasi Topup Coin</h3>
+                <h3 class="card-title">Verifikasi Withdraw</h3>
                 <div class="card-tools">
                     
                 </div>
@@ -47,8 +47,8 @@
                                 <th>No.</th>
                                 <th>ID Player</th>
                                 <th>Nama Player</th>
-                                <th>Jumlah Topup</th>
-                                <th>Tanggal Topup</th>
+                                <th>Jumlah Withdraw</th>
+                                <th>Tanggal Withdraw</th>
                                 <!-- <th>Bukti Transfer</th> -->
                                 <th style="width:170px;"></th>
                             </thead>
@@ -59,12 +59,12 @@
                                     <td>{{ $d->idplayer }}</td>
                                     <td>{{ $d->playername }}</td>
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
-                                    <td>{{ $d->topupdate }}</td>
+                                    <td>{{ $d->wdpdate }}</td>
                                     <!-- <td>
                                         <a href="/efiles/topupfiles/{{ $d->efile }}" target="_blank">{{ $d->efile }}</a>
                                     </td> -->
                                     <td style="text-align:center;">
-                                        <a href="/transaksi/topup/close/{{$d->id}}" class="btn btn-success btn-sm">
+                                        <a href="/transaksi/withdraw/close/{{$d->id}}" class="btn btn-success btn-sm">
                                             <i class="fa fa-ok"></i> DONE
                                         </a>                                         
                                     </td>

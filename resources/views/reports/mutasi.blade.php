@@ -1,8 +1,23 @@
 @extends('templates/main')
 
-@section('title', 'Verifikasi Topup Coin')
+@section('title', 'Laporan Mutasi')
 
 @section('header-content')
+<!-- <div class="content-header">
+    <div class="container-fluid" style="background-color:#fff">
+        <div class="row mb-2">
+            <div class="col-sm-6">
+            <h1>Data User</h1>
+            </div>
+            <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                <li class="breadcrumb-item active">Blank Page</li>
+            </ol>
+            </div>
+        </div>
+    </div>
+</div>   -->
 @endsection
 
 @section('content')
@@ -10,9 +25,15 @@
     <div class="col-lg-12 mt-2">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Verifikasi Topup Coin</h3>
+                <h3 class="card-title">Laporan Mutasi</h3>
                 <div class="card-tools">
+                    <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
+                        <i class="fas fa-minus"></i>
+                    </button> -->
                     
+                    <!-- <a href="/master/bank/create" class="btn btn-primary btn-sm"> 
+                        <i class="fa fa-plus"></i> Tambah Bank
+                    </a> -->
                 </div>
             </div>
             <div class="card-body">
@@ -45,29 +66,23 @@
                         <table id="tbl-users" class="table table-bordered table-striped table-hover table-sm">
                             <thead>
                                 <th>No.</th>
-                                <th>ID Player</th>
-                                <th>Nama Player</th>
-                                <th>Jumlah Topup</th>
-                                <th>Tanggal Topup</th>
-                                <!-- <th>Bukti Transfer</th> -->
-                                <th style="width:170px;"></th>
+                                <th>Tanggal</th>
+                                <th>Keterangan</th>
+                                <th>No. Rekening</th>
+                                <th>Debit</th>
+                                <th>Kredit</th>
+                                <th>Saldo Akhir</th>
                             </thead>
                             <tbody>
                                 @foreach($data as $key => $d)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{ $d->idplayer }}</td>
-                                    <td>{{ $d->playername }}</td>
-                                    <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
-                                    <td>{{ $d->topupdate }}</td>
-                                    <!-- <td>
-                                        <a href="/efiles/topupfiles/{{ $d->efile }}" target="_blank">{{ $d->efile }}</a>
-                                    </td> -->
-                                    <td style="text-align:center;">
-                                        <a href="/transaksi/topup/close/{{$d->id}}" class="btn btn-success btn-sm">
-                                            <i class="fa fa-ok"></i> DONE
-                                        </a>                                         
-                                    </td>
+                                    <td>{{ $d->transdate }}</td>
+                                    <td>{{ $d->note }}</td>
+                                    <td>{{ $d->to_acc }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->debit,0,'.',',') }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->credit,0,'.',',') }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->balance,0,'.',',') }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>

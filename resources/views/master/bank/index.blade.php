@@ -70,7 +70,8 @@
                                 <th>Nama Bank</th>
                                 <th>Nomor Rekening</th>
                                 <th>Atas Nama</th>
-                                <th>Tipe</th>
+                                <th>Saldo Awal</th>
+                                <!-- <th>Tipe</th> -->
                                 <th style="width:170px;"></th>
                             </thead>
                             <tbody>
@@ -81,7 +82,8 @@
                                     <td>{{ $d->bankname }}</td>
                                     <td>{{ $d->bank_accountnumber }}</td>
                                     <td>{{ $d->bank_accountname }}</td>
-                                    <td>{{ $d->bank_type }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->opening_balance,0,'.',',') }}</td>
+                                    <!-- <td>{{ $d->bank_type }}</td> -->
                                     <td style="text-align:center;">
                                         <a href="/master/bank/delete/{{$d->id}}" class="btn btn-danger btn-sm">
                                             <i class="fa fa-trash"></i> HAPUS

@@ -4,22 +4,21 @@ namespace App\Http\Controllers\Transaksi;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-// use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\File; 
 use Validator,Redirect,Response;
 use DB;
 use Auth;
 
-class TopupController extends Controller
+class WithdrawController extends Controller
 {
     public function index(){
         // $data = DB::table('players')->get();
-        return view('transactions.topupcoin.topup');
+        return view('transactions.withdraw.index');
     }
 
     public function verify(){
-        $data = DB::table('topups')->where('topup_status', 'Open')->get();
-        return view('transactions.topupcoin.verify', ['data' => $data]);
+        $data = DB::table('withdraws')->where('wd_status', 'Open')->get();
+        return view('transactions.withdraw.verify', ['data' => $data]);
     }
 
     public function save(Request $request){
@@ -44,8 +43,8 @@ class TopupController extends Controller
                     'idplayer'     => $playerid[$i],
                     'playername'   => $nmayerid[$i],
                     'amount'       => $jmltopup[$i],
-                    'topupdate'    => $tgltopup[$i],
-                    'topup_status' => 'Open',
+                    'wdpdate'      => $tgltopup[$i],
+                    'wd_status'    => 'Open',
                     // 'efile'        => $file->getClientOriginalName(),
                     'createdby'    => Auth::user()->name,
                     'created_at'   => now()
@@ -56,26 +55,26 @@ class TopupController extends Controller
                 //     $file->move($destinationPath,$file->getClientOriginalName());
                 // }
             }
-            insertOrUpdate($output,'topups');
+            insertOrUpdate($output,'withdraws');
             DB::commit();
 
             
-            return Redirect::to("/transaksi/topup")->withSuccess('Data Topup Berhasil di input');
+            return Redirect::to("/transaksi/withdraw")->withSuccess('Data Withdraw Berhasil di input');
         }catch(\Exception $e){
             DB::rollBack();
-            return Redirect::to("/transaksi/topup")->withError($e->getMessage());
+            return Redirect::to("/transaksi/withdraw")->withError($e->getMessage());
         }
     }
 
     public function close($id){
         DB::beginTransaction();
         try{
-            DB::table('topups')->where('id', $id)->update([
-                'topup_status' => 'Close',
+            DB::table('withdraws')->where('id', $id)->update([
+                'wd_status' => 'Close',
                 'updated_at'   => now()
             ]);
 
-            $topupdata = DB::table('topups')->where('id', $id)->first();
+            $wdData = DB::table('withdraws')->where('id', $id)->first();
 
             $latestSaldo = 0;
             $saldo = DB::table('cashflows')->where('to_acc','8765301921')->limit(1)->orderBy('id','DESC')->first();
@@ -86,12 +85,12 @@ class TopupController extends Controller
             $castFlow = array();
             $insertcastFlow = array(
                 'transdate'     => now(),
-                'note'          => 'Topup player '. $topupdata->idplayer,
+                'note'          => 'WD player '. $wdData->idplayer,
                 'from_acc'      => '',
                 'to_acc'        => '8765301921',
-                'debit'         => 0,
-                'credit'        => $topupdata->amount,
-                'balance'       => $topupdata->amount+$latestSaldo,
+                'debit'         => $wdData->amount,
+                'credit'        => 0,
+                'balance'       => $wdData->amount+$latestSaldo,
                 'createdby'     => Auth::user()->name,
                 'created_at'    => now()
             );
@@ -99,10 +98,10 @@ class TopupController extends Controller
             insertOrUpdate($castFlow,'cashflows');
 
             DB::commit();            
-            return Redirect::to("/transaksi/topup/verify")->withSuccess('Topup di web game berhasil');
+            return Redirect::to("/transaksi/withdraw/verify")->withSuccess('Withdraw Berhasil di proses');
         }catch(\Exception $e){
             DB::rollBack();
-            return Redirect::to("/transaksi/topup/verify")->withError($e->getMessage());
+            return Redirect::to("/transaksi/withdraw/verify")->withError($e->getMessage());
         }
     }
 }

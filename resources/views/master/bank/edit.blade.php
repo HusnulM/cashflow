@@ -62,34 +62,40 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="kodebank">Kode Bank</label>
                                 <input type="text" name="kodebank" class="form-control" value="{{ $data->bankid }}" autocomplete="off" required>
                                 <input type="hidden" name="idbank" value="{{ $data->id }}">
                             </div>
                         </div>
-                        <div class="col-lg-6 col-md-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="namabank">Nama Bank</label>
                                 <input type="text" name="namabank" class="form-control" value="{{ $data->bankname }}" autocomplete="off" required>
                             </div>
                         </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12">
+                            <div class="form-group">
+                                <label for="saldoawal">Saldo Awal</label>
+                                <input type="text" name="saldoawal" class="form-control" autocomplete="off" required>
+                            </div>
+                        </div>
                     </div>
                     <div class="row">
-                        <div class="col-lg-3 col-md-4 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="norek">Nomor Rekening</label>
                                 <input type="text" name="norek" class="form-control" value="{{ $data->bank_accountnumber }}" autocomplete="off" required>
                             </div>
                         </div>
-                        <div class="col-lg-5 col-md-4 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="atasnama">Atas Nama</label>
                                 <input type="text" name="atasnama" class="form-control" value="{{ $data->bank_accountname }}" autocomplete="off" required>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-4 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="tipebank">Tipe</label>
                                 <select name="tipebank" id="tipebank" class="form-control">

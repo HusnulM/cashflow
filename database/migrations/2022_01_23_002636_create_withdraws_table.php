@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateTopupsTable extends Migration
+class CreateWithdrawsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,13 @@ class CreateTopupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('topups', function (Blueprint $table) {
+        Schema::create('withdraws', function (Blueprint $table) {
             $table->id();
             $table->string('idplayer',50);
             $table->string('playername',100);
             $table->decimal('amount',15,2);
-            $table->date('topupdate');
-            $table->string('topup_status',50);
+            $table->date('wdpdate');
+            $table->string('wd_status',50);
             $table->string('efile')->nullable();
             $table->string('createdby',50);
             $table->timestamps();
@@ -33,6 +33,6 @@ class CreateTopupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('topups');
+        Schema::dropIfExists('withdraws');
     }
 }

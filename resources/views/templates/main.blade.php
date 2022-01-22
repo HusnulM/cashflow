@@ -175,6 +175,14 @@
 <!-- AdminLTE App -->
 <script src="/js/adminlte.js"></script>
 
+<script>
+  $(function(){
+    setTimeout(function(){ 
+      $('.msgAlert').hide();
+    }, 5000);
+  });
+</script>
+
 @yield('additional-js')
 </body>
 </html>

@@ -44,4 +44,17 @@ class MenuRoleController extends Controller
             return Redirect::to("/setting/menuroles")->withError($e->getMessage());
         }
     }
+
+    public function delete($roleid, $menuid){
+        DB::beginTransaction();
+        try{
+            DB::table('menuroles')->where('roleid', $roleid)->where('menuid', $menuid)->delete();
+
+            DB::commit();
+            return Redirect::to("/setting/menuroles")->withSuccess('Menu Role dihapus');
+        }catch(\Exception $e){
+            DB::rollBack();
+            return Redirect::to("/setting/menuroles")->withError($e->getMessage());
+        }
+    }
 }

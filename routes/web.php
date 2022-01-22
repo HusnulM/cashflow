@@ -33,6 +33,8 @@ Route::group(['middleware' => 'auth'], function () {
 
         Route::post('logout',  'HomeController@logout')->name('logout');
 
+        Route::get('logout2',  'HomeController@logout')->name('logout');
+
         
         Route::group(['prefix' => '/setting'], function () {
             Route::get('/users',             'Setting\UserController@index')->middleware('checkAuth:setting/users');
@@ -64,6 +66,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/menuroles',        'Setting\MenuRoleController@index')->middleware('checkAuth:setting/menuroles');
             Route::get('/menuroles/create', 'Setting\MenuRoleController@create')->middleware('checkAuth:setting/menuroles');
             Route::post('/menuroles/save',  'Setting\MenuRoleController@save')->middleware('checkAuth:setting/menuroles');
+            Route::get('/menuroles/delete/{p1}/{p2}', 'Setting\MenuRoleController@delete')->middleware('checkAuth:setting/menuroles');
             
             Route::get('/userroles',        'Setting\UserRoleController@index')->middleware('checkAuth:setting/userroles');
             Route::get('/userroles/create', 'Setting\UserRoleController@create')->middleware('checkAuth:setting/userroles');
@@ -78,6 +81,15 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/bank/save',      'Master\BankController@save')->middleware('checkAuth:master/bank');
             Route::post('/bank/update',    'Master\BankController@update')->middleware('checkAuth:master/bank');
             Route::get('/bank/delete/{id}','Master\BankController@delete')->middleware('checkAuth:master/bank');
+        });
+
+        Route::group(['prefix' => '/master/coa'], function () {
+            Route::get('/',           'Master\CoaController@index')->middleware('checkAuth:master/coa');
+            Route::get('/create',     'Master\CoaController@create')->middleware('checkAuth:master/coa');
+            Route::get('/edit/{id}',  'Master\CoaController@edit')->middleware('checkAuth:master/coa');
+            Route::post('/save',      'Master\CoaController@save')->middleware('checkAuth:master/coa');
+            Route::post('/update',    'Master\CoaController@update')->middleware('checkAuth:master/coa');
+            Route::get('/delete/{id}','Master\CoaController@delete')->middleware('checkAuth:master/coa');
         });
 
         Route::group(['prefix' => '/master/player'], function () {
@@ -97,8 +109,18 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/close/{id}',  'Transaksi\TopupController@close')->middleware('checkAuth:transaksi/topup/verify');
         });
 
-        Route::group(['prefix' => '/laporan'], function () {
+        Route::group(['prefix' => '/transaksi/withdraw'], function () {
+            Route::get('/',            'Transaksi\WithdrawController@index')->middleware('checkAuth:transaksi/withdraw');
+            Route::post('/save',       'Transaksi\WithdrawController@save')->middleware('checkAuth:transaksi/withdraw');
 
+            Route::get('/verify',      'Transaksi\WithdrawController@verify')->middleware('checkAuth:transaksi/withdraw/verify');
+            Route::get('/close/{id}',  'Transaksi\WithdrawController@close')->middleware('checkAuth:transaksi/withdraw/verify');
+        });
+
+        Route::group(['prefix' => '/laporan'], function () {
+            Route::get('/topup',            'Reports\ReportController@reportTopup')->middleware('checkAuth:laporan/topup');
+            Route::get('/withdraw',         'Reports\ReportController@reportWithdraw')->middleware('checkAuth:laporan/withdraw');
+            Route::get('/mutasi',           'Reports\ReportController@reportMutasi')->middleware('checkAuth:laporan/mutasi');
         });
     });
 });

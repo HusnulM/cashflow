@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Validator,Redirect,Response;
 use DB;
+use Auth;
 
 class BankController extends Controller
 {
@@ -32,16 +33,39 @@ class BankController extends Controller
                 'bankname'           => $request['namabank'],
                 'bank_accountnumber' => $request['norek'],
                 'bank_accountname'   => $request['atasnama'],
-                'bank_type'          => $request['tipebank']
+                'bank_type'          => $request['tipebank'],
+                'opening_balance'    => $request['saldoawal'],
+                'createdby'          => Auth::user()->name,
+                'created_at'         => now()
             );
             array_push($output, $menuroledata);
             insertOrUpdate($output,'banks');
+
+            $saldoAwal = array();
+            $insertSaldo = array(
+                'transdate'     => now(),
+                'note'          => 'Saldo awal',
+                'from_acc'      => '',
+                'to_acc'        => $request['norek'],
+                'debit'         => 0,
+                'credit'        => $request['saldoawal'],
+                'balance'       => $request['saldoawal'],
+                'createdby'     => Auth::user()->name,
+                'created_at'    => now()
+            );
+            array_push($saldoAwal, $insertSaldo);
+            insertOrUpdate($saldoAwal,'cashflows');
+
             DB::commit();
             return Redirect::to("/master/bank")->withSuccess('Master Bank ditambahkan');
         }catch(\Exception $e){
             DB::rollBack();
             return Redirect::to("/master/bank")->withError($e->getMessage());
         }
+    }
+
+    public function createSaldoAwal($data){
+
     }
 
     public function update(Request $request){
@@ -52,7 +76,9 @@ class BankController extends Controller
                 'bankname'           => $request['namabank'],
                 'bank_accountnumber' => $request['norek'],
                 'bank_accountname'   => $request['atasnama'],
-                'bank_type'          => $request['tipebank']
+                'bank_type'          => $request['tipebank'],
+                'opening_balance'    => $request['saldoawal'],
+                'updated_at'         => now()
             ]);
             DB::commit();
             return Redirect::to("/master/bank")->withSuccess('Master Bank diubah');

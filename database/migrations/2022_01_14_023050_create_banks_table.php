@@ -16,6 +16,10 @@ class CreateBanksTable extends Migration
         Schema::create('banks', function (Blueprint $table) {
             $table->string('bankid',10);
             $table->string('bankname',100);
+            $table->string('bank_accountnumber',100);
+            $table->string('bank_accountname',100);
+            $table->string('bank_type',100);
+            $table->decimal('opening_balance',15,2);
             $table->timestamps();
 
             $table->primary(['bankid']);
