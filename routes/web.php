@@ -141,6 +141,15 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/topup',            'Reports\ReportController@reportTopup')->middleware('checkAuth:laporan/topup');
             Route::get('/withdraw',         'Reports\ReportController@reportWithdraw')->middleware('checkAuth:laporan/withdraw');
             Route::get('/mutasi',           'Reports\ReportController@reportMutasi')->middleware('checkAuth:laporan/mutasi');
+            Route::get('/pemasukan',        'Reports\ReportController@reportPemasukan')->middleware('checkAuth:laporan/pemasukan');
+            Route::get('/pengeluaran',      'Reports\ReportController@reportPengeluaran')->middleware('checkAuth:laporan/pengeluaran');
+            Route::get('/deposit',      'Reports\ReportController@reportDeposit')->middleware('checkAuth:laporan/deposit');
         });
+
+        // Route::group(['prefix' => '/laporan'], function () {
+        //     Route::get('/topup',            'Reports\ReportController@reportTopup')->middleware('checkAuth:laporan/topup');
+        //     Route::get('/withdraw',         'Reports\ReportController@reportWithdraw')->middleware('checkAuth:laporan/withdraw');
+        //     Route::get('/mutasi',           'Reports\ReportController@reportMutasi')->middleware('checkAuth:laporan/mutasi');
+        // });
     });
 });

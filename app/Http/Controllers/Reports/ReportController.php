@@ -24,4 +24,19 @@ class ReportController extends Controller
         $data = DB::table('cashflows')->orderBy('to_acc','ASC')->orderBy('id','ASC')->get();
         return view('reports.mutasi', ['data' => $data]);
     }
+
+    public function reportPemasukan(){
+        $data = DB::table('incomes')->get();
+        return view('reports.pemasukan', ['data' => $data]);
+    }
+
+    public function reportPengeluaran(){
+        $data = DB::table('expenses')->get();
+        return view('reports.pengeluaran', ['data' => $data]);
+    }
+
+    public function reportDeposit(){
+        $data = DB::table('deposits')->get();
+        return view('reports.deposit', ['data' => $data]);
+    }
 }

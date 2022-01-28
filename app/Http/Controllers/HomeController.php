@@ -12,14 +12,20 @@ class HomeController extends Controller
 {
     public function index(){
         if(Auth::check()){
-            return redirect()->intended('dashboard');
+            $coin = DB::table('coin_stocks')->first();
+            return redirect()->intended('dashboard', ['coin' => $coin]);
         }
         return view('login');
         // return view('dashboard');
     }
 
     public function dashboard(){
-        return view('dashboard');
+        $coin       = DB::table('coin_stocks')->first();
+        $totaldepo  = DB::table('deposits')->count();
+        $totaltopup = DB::table('topups')->count();
+        $totalwd    = DB::table('withdraws')->count();
+        // return $totaldepo;
+        return view('dashboard', ['coin' => $coin, 'totaldepo' => $totaldepo, 'totaltopup' => $totaltopup, 'totalwd' => $totalwd]);
     }
 
     public function login(Request $request){

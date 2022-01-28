@@ -80,6 +80,22 @@ class BankController extends Controller
                 'opening_balance'    => $request['saldoawal'],
                 'updated_at'         => now()
             ]);
+
+            $saldoAwal = array();
+            $insertSaldo = array(
+                'transdate'     => now(),
+                'note'          => 'Saldo awal',
+                'from_acc'      => '',
+                'to_acc'        => $request['norek'],
+                'debit'         => 0,
+                'credit'        => $request['saldoawal'],
+                'balance'       => $request['saldoawal'],
+                'createdby'     => Auth::user()->name,
+                'created_at'    => now()
+            );
+            array_push($saldoAwal, $insertSaldo);
+            insertOrUpdate($saldoAwal,'cashflows');
+            
             DB::commit();
             return Redirect::to("/master/bank")->withSuccess('Master Bank diubah');
         }catch(\Exception $e){
