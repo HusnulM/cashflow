@@ -18,8 +18,10 @@ class CreateTopupsTable extends Migration
             $table->string('idplayer',50);
             $table->string('playername',100);
             $table->decimal('amount',15,2);
+            $table->decimal('topup_bonus',15,2);
             $table->date('topupdate');
             $table->string('topup_status',50);
+            $table->string('rekening_tujuan',30);
             $table->string('efile')->nullable();
             $table->string('createdby',50);
             $table->timestamps();

@@ -14,7 +14,8 @@ class TopupController extends Controller
 {
     public function index(){
         // $data = DB::table('players')->get();
-        return view('transactions.topupcoin.topup');
+        $bank = DB::table('banks')->get();
+        return view('transactions.topupcoin.index', ['bank' => $bank]);
     }
 
     public function verify(){
@@ -23,6 +24,7 @@ class TopupController extends Controller
     }
 
     public function save(Request $request){
+        // return $request;
         DB::beginTransaction();
         try{
             // $destinationPath = 'efiles/topupfiles';
@@ -30,33 +32,61 @@ class TopupController extends Controller
             //     File::makeDirectory($destinationPath, 0755, true, true);
             // }
 
-            $output = array();
-            $playerid = $request['itm_idplayer'];
-            $nmayerid = $request['itm_nmplayer'];
-            $jmltopup = $request['itm_jmltopup'];
-            $tgltopup = $request['itm_tgltopup'];
-            // $xfile    = $request->file('itm_efile');
+            // $output = array();
+            // $playerid = $request['itm_idplayer'];
+            // $nmayerid = $request['itm_nmplayer'];
+            // $jmltopup = $request['itm_jmltopup'];
+            // $tgltopup = $request['itm_tgltopup'];
+            // $bontopup = $request['itm_jmlbonus'];
+            // // $xfile    = $request->file('itm_efile');
             
-            for($i = 0; $i < sizeof($playerid); $i++){
-                // $file = $xfile[$i];
+            // for($i = 0; $i < sizeof($playerid); $i++){
+            //     // $file = $xfile[$i];
                 
-                $insertData = array(
-                    'idplayer'     => $playerid[$i],
-                    'playername'   => $nmayerid[$i],
-                    'amount'       => $jmltopup[$i],
-                    'topupdate'    => $tgltopup[$i],
-                    'topup_status' => 'Open',
-                    // 'efile'        => $file->getClientOriginalName(),
-                    'createdby'    => Auth::user()->name,
-                    'created_at'   => now()
-                );
-                array_push($output, $insertData);
+            //     $insertData = array(
+            //         'idplayer'     => $playerid[$i],
+            //         'playername'   => $nmayerid[$i],
+            //         'amount'       => $jmltopup[$i],
+            //         'topup_bonus'  => $bontopup[$i],
+            //         'topupdate'    => $tgltopup[$i],
+            //         'topup_status' => 'Open',
+            //         // 'efile'        => $file->getClientOriginalName(),
+            //         'createdby'    => Auth::user()->name,
+            //         'created_at'   => now()
+            //     );
+            //     array_push($output, $insertData);
 
-                // if(!empty($file)){
-                //     $file->move($destinationPath,$file->getClientOriginalName());
-                // }
-            }
-            insertOrUpdate($output,'topups');
+            //     // if(!empty($file)){
+            //     //     $file->move($destinationPath,$file->getClientOriginalName());
+            //     // }
+            // }
+            // insertOrUpdate($output,'topups');
+            
+            $topupData = array();
+            $insertData = array(
+                'idplayer'     => $request->idplayer,
+                'playername'   => $request->namaplayer,
+                'amount'       => $request->jmltopup,
+                'topup_bonus'  => $request->bonustopup,
+                'topupdate'    => $request->tgltopup,
+                'topup_status' => 'Open',
+                'rekening_tujuan' => $request->rekening,
+                'createdby'    => Auth::user()->name,
+                'created_at'   => now()
+            );
+            array_push($topupData, $insertData);
+            insertOrUpdate($topupData,'topups');
+
+            $playerdata = array();
+            $insertPlayer = array(
+                'playerid'   => $request['idplayer'],
+                'playername' => $request['namaplayer'],
+                'bankname'   => $request['namabank'],
+                'bankacc'    => $request['nomor_rek']
+            );
+            array_push($playerdata, $insertPlayer);
+            insertOrUpdate($playerdata,'players');
+
             DB::commit();
 
             
@@ -64,6 +94,7 @@ class TopupController extends Controller
         }catch(\Exception $e){
             DB::rollBack();
             return Redirect::to("/transaksi/topup")->withError($e->getMessage());
+            // dd($e->getMessage());
         }
     }
 
@@ -78,7 +109,7 @@ class TopupController extends Controller
             $topupdata = DB::table('topups')->where('id', $id)->first();
 
             $latestSaldo = 0;
-            $saldo = DB::table('cashflows')->where('to_acc','8765301921')->limit(1)->orderBy('id','DESC')->first();
+            $saldo = DB::table('cashflows')->where('to_acc',$topupdata->rekening_tujuan)->limit(1)->orderBy('id','DESC')->first();
             if($saldo){
                 $latestSaldo = $saldo->balance;
             }
@@ -88,7 +119,7 @@ class TopupController extends Controller
                 'transdate'     => now(),
                 'note'          => 'Topup player '. $topupdata->idplayer,
                 'from_acc'      => '',
-                'to_acc'        => '8765301921',
+                'to_acc'        => $topupdata->rekening_tujuan,
                 'debit'         => 0,
                 'credit'        => $topupdata->amount,
                 'balance'       => $topupdata->amount+$latestSaldo,

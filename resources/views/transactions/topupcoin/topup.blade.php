@@ -57,6 +57,7 @@
                                     <th>ID Player</th>
                                     <th>Nama Player</th>
                                     <th>Jumlah Topup</th>
+                                    <th>Bonus</th>
                                     <th>Tgl Topup</th>
                                     <th style="width:100px;"></th>
                                 </thead>
@@ -64,7 +65,7 @@
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="4"></td>
+                                        <td colspan="5"></td>
                                         <td colspan="2" style="text-align:right;">
                                             <input type="number" id="new-row-add" style="text-align:right; width:60px;" placeholder="Jumlah Tambah Data" value="1">
                                             <button type="button" class="btn btn-primary btn-sm" id="btn-add-player">
@@ -125,6 +126,9 @@
                         </td>
                         <td> 
                             <input type="text" name="itm_jmltopup[]" counter="`+count+`" id="jmltopup`+count+`" class="form-control" required/>
+                        </td>
+                        <td> 
+                            <input type="text" name="itm_jmlbonus[]" counter="`+count+`" id="jmlbonus`+count+`" class="form-control" required/>
                         </td>
                         <td> 
                             <input type="date" name="itm_tgltopup[]" counter="`+count+`" id="tgltopup`+count+`" class="form-control" value="`+ today +`" required/>

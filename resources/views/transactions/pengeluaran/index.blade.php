@@ -1,22 +1,22 @@
 @extends('templates/main')
 
-@section('title', 'TOP Up Coin')
+@section('title', 'Input Pengeluaran')
 
 @section('header-content')
 @endsection
 
 @section('content')
-<form action="{{ url('transaksi/topup/save') }}" method="post" enctype="multipart/form-data">
+<form action="{{ url('transaksi/pengeluaran/save') }}" method="post" enctype="multipart/form-data">
     @csrf
     <div class="row">
         <div class="col-lg-12 mt-2">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">TOP Up Coin</h3>
+                    <h3 class="card-title">Input Pengeluaran</h3>
                     <div class="card-tools">    
-                        <a href="/transaksi/topup/upload" class="btn btn-success btn-sm"> 
+                        <!-- <a href="/transaksi/deposit/upload" class="btn btn-success btn-sm"> 
                             <i class="fa fa-upload"></i> Upload
-                        </a>
+                        </a> -->
                         <button type="submit" class="btn btn-primary btn-sm"> 
                             <i class="fa fa-save"></i> Simpan
                         </button>
@@ -49,62 +49,38 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="diplayer">ID Player</label>
-                                <input type="text" name="idplayer" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="jmltopup">Jumlah TOP Up</label>
-                                <input type="text" name="jmltopup" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-3">
-                            <div class="form-group">
-                                <label for="bonustopup">Bonus TOP Up</label>
-                                <input type="text" name="bonustopup" class="form-control">
+                                <label for="tglPengeluaran">Tanggal Pengeluaran</label>
+                                <input type="date" name="tglPengeluaran" class="form-control" value="<?= date('Y-m-d'); ?>">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
-                                <label for="namaplayer">Nama Player</label>
-                                <input type="text" name="namaplayer" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="namabank">Nama Bank</label>
-                                <input type="text" name="namabank" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="tgltopup">Tanggal Topup</label>
-                                <input type="date" name="tgltopup" class="form-control">
-                            </div>
-                        </div>
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="nomor_rek">Nomor Rekening</label>
-                                <input type="text" name="nomor_rek" class="form-control">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <div class="form-group">
-                                <label for="rekening">Rekening Tujuan Pembayaran</label>
-                                <select name="rekening" id="rekening" class="form-control" required>
+                                <label for="rekening">Rekening Sumber</label>
+                                <select name="rekening" id="rekening" class="form-control">
                                     @foreach($bank as $b)
                                     <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }}</option>
                                     @endforeach
                                 </select>
                             </div>
                         </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="jmlPengeluaran">Jumlah Pengeluaran</label>
+                                <input type="text" name="jmlPengeluaran" class="form-control" required>
+                            </div>
+                        </div>                      
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="note">Keterangan</label>
+                                <textarea name="note" id="note" cols="30" rows="2" class="form-control"></textarea>
+                            </div>
+                        </div>                        
                     </div>
                 </div>
                 <div class="card-footer">

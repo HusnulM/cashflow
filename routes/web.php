@@ -109,12 +109,32 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/close/{id}',  'Transaksi\TopupController@close')->middleware('checkAuth:transaksi/topup/verify');
         });
 
+        Route::group(['prefix' => '/transaksi/deposit'], function () {
+            Route::get('/',            'Transaksi\DepositController@index')->middleware('checkAuth:transaksi/deposit');
+            Route::post('/save',       'Transaksi\DepositController@save')->middleware('checkAuth:transaksi/deposit');
+        });
+
         Route::group(['prefix' => '/transaksi/withdraw'], function () {
             Route::get('/',            'Transaksi\WithdrawController@index')->middleware('checkAuth:transaksi/withdraw');
             Route::post('/save',       'Transaksi\WithdrawController@save')->middleware('checkAuth:transaksi/withdraw');
 
             Route::get('/verify',      'Transaksi\WithdrawController@verify')->middleware('checkAuth:transaksi/withdraw/verify');
             Route::get('/close/{id}',  'Transaksi\WithdrawController@close')->middleware('checkAuth:transaksi/withdraw/verify');
+        });
+
+        Route::group(['prefix' => '/transaksi/transfer'], function () {
+            Route::get('/',            'Transaksi\PindahDanaController@index')->middleware('checkAuth:transaksi/transfer');
+            Route::post('/save',       'Transaksi\PindahDanaController@save')->middleware('checkAuth:transaksi/transfer');
+        });
+
+        Route::group(['prefix' => '/transaksi/pemasukan'], function () {
+            Route::get('/',            'Transaksi\PemasukanController@index')->middleware('checkAuth:transaksi/pemasukan');
+            Route::post('/save',       'Transaksi\PemasukanController@save')->middleware('checkAuth:transaksi/pemasukan');
+        });
+
+        Route::group(['prefix' => '/transaksi/pengeluaran'], function () {
+            Route::get('/',            'Transaksi\PengeluaranController@index')->middleware('checkAuth:transaksi/pengeluaran');
+            Route::post('/save',       'Transaksi\PengeluaranController@save')->middleware('checkAuth:transaksi/pengeluaran');
         });
 
         Route::group(['prefix' => '/laporan'], function () {

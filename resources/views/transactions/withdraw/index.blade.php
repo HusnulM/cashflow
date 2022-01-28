@@ -55,13 +55,14 @@
                                     <th>Nama Player</th>
                                     <th>Jumlah Withdraw</th>
                                     <th>Tgl Withdraw</th>
+                                    <th>Rekening Sumber Dana</th>
                                     <th style="width:100px;"></th>
                                 </thead>
                                 <tbody class="mainbodynpo" id="item-topup">
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="4"></td>
+                                        <td colspan="5"></td>
                                         <td colspan="2" style="text-align:right;">
                                             <input type="number" id="new-row-add" style="text-align:right; width:60px;" placeholder="Jumlah Tambah Data" value="1">
                                             <button type="button" class="btn btn-primary btn-sm" id="btn-add-player">
@@ -125,6 +126,13 @@
                         </td>
                         <td> 
                             <input type="date" name="itm_tgltopup[]" counter="`+count+`" id="tgltopup`+count+`" class="form-control" value="`+ today +`" required/>
+                        </td>
+                        <td>
+                            <select name="itm_rekening[]" class="form-control" required>
+                                @foreach($bank as $b)
+                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }}</option>
+                                @endforeach
+                            </select>
                         </td>
                         <td style="text-align:center;width:100px;">
                             <button type="button" class="btn btn-danger btn-sm removeItem" counter="`+count+`">

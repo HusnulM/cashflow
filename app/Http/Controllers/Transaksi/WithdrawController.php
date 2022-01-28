@@ -12,8 +12,8 @@ use Auth;
 class WithdrawController extends Controller
 {
     public function index(){
-        // $data = DB::table('players')->get();
-        return view('transactions.withdraw.index');
+        $bank = DB::table('banks')->get();
+        return view('transactions.withdraw.index', ['bank' => $bank]);
     }
 
     public function verify(){
@@ -34,6 +34,7 @@ class WithdrawController extends Controller
             $nmayerid = $request['itm_nmplayer'];
             $jmltopup = $request['itm_jmltopup'];
             $tgltopup = $request['itm_tgltopup'];
+            $rekening = $request['itm_rekening'];
             // $xfile    = $request->file('itm_efile');
             
             for($i = 0; $i < sizeof($playerid); $i++){
@@ -45,6 +46,7 @@ class WithdrawController extends Controller
                     'amount'       => $jmltopup[$i],
                     'wdpdate'      => $tgltopup[$i],
                     'wd_status'    => 'Open',
+                    'rekening_sumber' => $rekening[$i],
                     // 'efile'        => $file->getClientOriginalName(),
                     'createdby'    => Auth::user()->name,
                     'created_at'   => now()
@@ -77,7 +79,7 @@ class WithdrawController extends Controller
             $wdData = DB::table('withdraws')->where('id', $id)->first();
 
             $latestSaldo = 0;
-            $saldo = DB::table('cashflows')->where('to_acc','8765301921')->limit(1)->orderBy('id','DESC')->first();
+            $saldo = DB::table('cashflows')->where('to_acc',$wdData->rekening_sumber)->limit(1)->orderBy('id','DESC')->first();
             if($saldo){
                 $latestSaldo = $saldo->balance;
             }
@@ -87,10 +89,10 @@ class WithdrawController extends Controller
                 'transdate'     => now(),
                 'note'          => 'WD player '. $wdData->idplayer,
                 'from_acc'      => '',
-                'to_acc'        => '8765301921',
+                'to_acc'        => $wdData->rekening_sumber,
                 'debit'         => $wdData->amount,
                 'credit'        => 0,
-                'balance'       => $wdData->amount+$latestSaldo,
+                'balance'       => $latestSaldo-$wdData->amount,
                 'createdby'     => Auth::user()->name,
                 'created_at'    => now()
             );

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateWithdrawsTable extends Migration
+class CreateIncomesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,15 +13,12 @@ class CreateWithdrawsTable extends Migration
      */
     public function up()
     {
-        Schema::create('withdraws', function (Blueprint $table) {
+        Schema::create('incomes', function (Blueprint $table) {
             $table->id();
-            $table->string('idplayer',50);
-            $table->string('playername',100);
+            $table->date('tgl_pemasukan');
             $table->decimal('amount',15,2);
-            $table->date('wdpdate');
-            $table->string('wd_status',50);
-            $table->string('rekening_sumber',30);
-            $table->string('efile')->nullable();
+            $table->string('keterangan',100);
+            $table->string('bank_account',100);
             $table->string('createdby',50);
             $table->timestamps();
         });
@@ -34,6 +31,6 @@ class CreateWithdrawsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('withdraws');
+        Schema::dropIfExists('incomes');
     }
 }

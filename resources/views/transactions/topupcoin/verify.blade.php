@@ -48,8 +48,9 @@
                                 <th>ID Player</th>
                                 <th>Nama Player</th>
                                 <th>Jumlah Topup</th>
+                                <th>Bonus Topup</th>
                                 <th>Tanggal Topup</th>
-                                <!-- <th>Bukti Transfer</th> -->
+                                <th>dibayar Ke</th>
                                 <th style="width:170px;"></th>
                             </thead>
                             <tbody>
@@ -59,7 +60,9 @@
                                     <td>{{ $d->idplayer }}</td>
                                     <td>{{ $d->playername }}</td>
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->topup_bonus,0,'.',',') }}</td>
                                     <td>{{ $d->topupdate }}</td>
+                                    <td>{{ $d->rekening_tujuan }}</td>
                                     <!-- <td>
                                         <a href="/efiles/topupfiles/{{ $d->efile }}" target="_blank">{{ $d->efile }}</a>
                                     </td> -->

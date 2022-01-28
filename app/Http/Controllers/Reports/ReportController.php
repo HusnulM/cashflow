@@ -21,7 +21,7 @@ class ReportController extends Controller
     }
 
     public function reportMutasi(){
-        $data = DB::table('cashflows')->get();
+        $data = DB::table('cashflows')->orderBy('to_acc','ASC')->orderBy('id','ASC')->get();
         return view('reports.mutasi', ['data' => $data]);
     }
 }
