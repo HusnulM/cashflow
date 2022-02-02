@@ -129,6 +129,18 @@ class TopupController extends Controller
             array_push($castFlow, $insertcastFlow);
             insertOrUpdate($castFlow,'cashflows');
 
+            //Update Stock coin
+            $stockCoint = 0;
+            $bankData  = DB::table('banks')->where('bank_accountnumber', $topupdata->rekening_tujuan)->first();
+            $totalcoin = DB::table('coin_stocks')->where('bankcode', $bankData->bankid)->where('bankacc', $topupdata->rekening_tujuan)->first();
+            if($totalcoin){
+                $stockCoint = $totalcoin->totalcoin;
+                DB::table('coin_stocks')->where('id', $totalcoin->id)->update([
+                    'totalcoin' => $stockCoint - ( $topupdata->amount + $topupdata->topup_bonus ),
+                    'updated_at'   => date('Y-m-d H:i:s')
+                ]);
+            }
+
             DB::commit();            
             return Redirect::to("/transaksi/topup/verify")->withSuccess('Topup di web game berhasil');
         }catch(\Exception $e){

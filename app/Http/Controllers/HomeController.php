@@ -20,7 +20,8 @@ class HomeController extends Controller
     }
 
     public function dashboard(){
-        $coin       = DB::table('coin_stocks')->first();
+        $coin       = DB::table('coin_stocks')->sum('totalcoin');
+        // return $coin;
         $totaldepo  = DB::table('deposits')->count();
         $totaltopup = DB::table('topups')->count();
         $totalwd    = DB::table('withdraws')->count();

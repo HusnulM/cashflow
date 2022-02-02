@@ -65,6 +65,18 @@
                     <div class="row">
                         <div class="col-lg-6">
                             <div class="form-group">
+                                <label for="rekening">Rekening Sumber Dana</label>
+                                <select name="rekening" id="rekening" class="form-control" required>
+                                    @foreach($bank as $b)
+                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <div class="form-group">
                                 <label for="note">Keterangan</label>
                                 <textarea name="note" id="note" cols="30" rows="4" class="form-control"></textarea>
                             </div>

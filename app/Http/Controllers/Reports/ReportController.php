@@ -39,4 +39,14 @@ class ReportController extends Controller
         $data = DB::table('deposits')->get();
         return view('reports.deposit', ['data' => $data]);
     }
+
+    public function reportStockcoin(){
+        $data = DB::table('coin_stocks')->get();
+        return view('reports.stockcoin', ['data' => $data]);
+    }
+
+    public function reportSaldobank(){
+        $data = DB::table('v_saldobank')->get();
+        return view('reports.saldobank', ['data' => $data]);
+    }
 }

@@ -15,8 +15,12 @@ class CreateCoinStocksTable extends Migration
     {
         Schema::create('coin_stocks', function (Blueprint $table) {
             $table->id();
+            $table->string('bankcode',30);
+            $table->string('bankacc',30);
             $table->decimal('totalcoin',15,2);
             $table->timestamps();
+
+            // $table->primary(['object']);
         });
     }
 

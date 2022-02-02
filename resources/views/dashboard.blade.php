@@ -16,11 +16,11 @@
 
 @section('content')
 <div class="row">
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-6 col-12">
       <!-- small box -->
       <div class="small-box bg-info">
         <div class="inner">
-          <h3>{{ number_format($coin->totalcoin ?? 0,0) }}</h3>
+          <h3>{{ number_format($coin ?? 0,0) }}</h3>
 
           <p>COIN</p>
         </div>
@@ -31,7 +31,7 @@
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-6 col-12">
       <!-- small box -->
       <div class="small-box bg-success">
         <div class="inner">
@@ -46,7 +46,7 @@
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-6 col-12">
       <!-- small box -->
       <div class="small-box bg-warning">
         <div class="inner">
@@ -61,7 +61,7 @@
       </div>
     </div>
     <!-- ./col -->
-    <div class="col-lg-3 col-6">
+    <div class="col-lg-6 col-12">
       <!-- small box -->
       <div class="small-box bg-danger">
         <div class="inner">

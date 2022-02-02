@@ -99,6 +99,19 @@ class WithdrawController extends Controller
             array_push($castFlow, $insertcastFlow);
             insertOrUpdate($castFlow,'cashflows');
 
+            //Update Stock coin
+            $stockCoint = 0;
+            $bankData = DB::table('banks')->where('bank_accountnumber', $wdData->rekening_sumber)->first();
+            $totalcoin = DB::table('coin_stocks')->where('bankcode', $bankData->bankid)->where('bankacc', $wdData->rekening_sumber)->first();
+            if($totalcoin){
+                $stockCoint = $totalcoin->totalcoin;
+                DB::table('coin_stocks')->where('id', $totalcoin->id)->update([
+                    'totalcoin' => $stockCoint + $wdData->amount,
+                    'updated_at'   => date('Y-m-d H:i:s')
+                ]);
+            }
+            // $coinData = DB::table('coin_stocks')->where('id',$wdData->idplayer)->first();
+
             DB::commit();            
             return Redirect::to("/transaksi/withdraw/verify")->withSuccess('Withdraw Berhasil di proses');
         }catch(\Exception $e){

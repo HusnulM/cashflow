@@ -143,7 +143,9 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/mutasi',           'Reports\ReportController@reportMutasi')->middleware('checkAuth:laporan/mutasi');
             Route::get('/pemasukan',        'Reports\ReportController@reportPemasukan')->middleware('checkAuth:laporan/pemasukan');
             Route::get('/pengeluaran',      'Reports\ReportController@reportPengeluaran')->middleware('checkAuth:laporan/pengeluaran');
-            Route::get('/deposit',      'Reports\ReportController@reportDeposit')->middleware('checkAuth:laporan/deposit');
+            Route::get('/deposit',          'Reports\ReportController@reportDeposit')->middleware('checkAuth:laporan/deposit');
+            Route::get('/stockcoin',        'Reports\ReportController@reportStockcoin')->middleware('checkAuth:laporan/stockcoin');
+            Route::get('/saldobank',        'Reports\ReportController@reportSaldobank')->middleware('checkAuth:laporan/saldobank');
         });
 
         // Route::group(['prefix' => '/laporan'], function () {
