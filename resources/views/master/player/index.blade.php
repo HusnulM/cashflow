@@ -70,6 +70,7 @@
                                 <th>Nama Player</th>
                                 <th>Nama Bank</th>
                                 <th>Nomor Rekening</th>
+                                <th>Afiliator</th>
                                 <th style="width:170px;"></th>
                             </thead>
                             <tbody>
@@ -80,6 +81,7 @@
                                     <td>{{ $d->playername }}</td>
                                     <td>{{ $d->bankname }}</td>
                                     <td>{{ $d->bankacc }}</td>
+                                    <td>{{ $d->afiliator }}</td>
                                     <td style="text-align:center;">
                                         <a href="/master/player/delete/{{$d->playerid}}" class="btn btn-danger btn-sm">
                                             <i class="fa fa-trash"></i> HAPUS

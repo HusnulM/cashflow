@@ -11,7 +11,7 @@ use Auth;
 class ReportController extends Controller
 {
     public function reportTopup(){
-        $data = DB::table('topups')->get();
+        $data = DB::table('deposits')->get();
         return view('reports.topup', ['data' => $data]);
     }
 
@@ -36,7 +36,7 @@ class ReportController extends Controller
     }
 
     public function reportDeposit(){
-        $data = DB::table('deposits')->get();
+        $data = DB::table('topups')->get();
         return view('reports.deposit', ['data' => $data]);
     }
 

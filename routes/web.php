@@ -101,17 +101,17 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/delete/{id}', 'Master\PlayerController@delete')->middleware('checkAuth:master/player');
         });
 
-        Route::group(['prefix' => '/transaksi/topup'], function () {
-            Route::get('/',            'Transaksi\TopupController@index')->middleware('checkAuth:transaksi/topup');
-            Route::post('/save',       'Transaksi\TopupController@save')->middleware('checkAuth:transaksi/topup');
-
-            Route::get('/verify',      'Transaksi\TopupController@verify')->middleware('checkAuth:transaksi/topup/verify');
-            Route::get('/close/{id}',  'Transaksi\TopupController@close')->middleware('checkAuth:transaksi/topup/verify');
-        });
-
         Route::group(['prefix' => '/transaksi/deposit'], function () {
             Route::get('/',            'Transaksi\DepositController@index')->middleware('checkAuth:transaksi/deposit');
             Route::post('/save',       'Transaksi\DepositController@save')->middleware('checkAuth:transaksi/deposit');
+
+            Route::get('/verify',      'Transaksi\DepositController@verify')->middleware('checkAuth:transaksi/deposit/verify');
+            Route::get('/close/{id}',  'Transaksi\DepositController@close')->middleware('checkAuth:transaksi/deposit/verify');
+        });
+
+        Route::group(['prefix' => '/transaksi/topup'], function () {
+            Route::get('/',            'Transaksi\TopupController@index')->middleware('checkAuth:transaksi/topup');
+            Route::post('/save',       'Transaksi\TopupController@save')->middleware('checkAuth:transaksi/topup');
         });
 
         Route::group(['prefix' => '/transaksi/withdraw'], function () {

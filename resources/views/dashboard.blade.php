@@ -37,7 +37,7 @@
         <div class="inner">
           <h3>{{ $totaldepo }}<sup style="font-size: 20px"></sup></h3>
 
-          <p>DEPO</p>
+          <p>Top UP</p>
         </div>
         <div class="icon">
           <i class="ion ion-stats-bars"></i>
@@ -67,7 +67,7 @@
         <div class="inner">
           <h3>{{ $totaltopup }}</h3>
 
-          <p>Top UP</p>
+          <p>Deposit</p>
         </div>
         <div class="icon">
           <i class="ion ion-pie-graph"></i>

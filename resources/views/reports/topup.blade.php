@@ -1,6 +1,6 @@
 @extends('templates/main')
 
-@section('title', 'Laporan Topup')
+@section('title', 'Laporan Top Up')
 
 @section('header-content')
 <!-- <div class="content-header">
@@ -25,7 +25,7 @@
     <div class="col-lg-12 mt-2">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Laporan Topup</h3>
+                <h3 class="card-title">Laporan Top Up</h3>
                 <div class="card-tools">
                     <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
@@ -66,21 +66,17 @@
                         <table id="tbl-users" class="table table-bordered table-striped table-hover table-sm">
                             <thead>
                                 <th>No.</th>
-                                <th>ID Player</th>
-                                <th>Nama Player</th>
-                                <th>Tanggal Topup</th>
-                                <th>Jumlah Topup</th>
-                                <th>Status Topup</th>
+                                <th>Tanggal</th>
+                                <th>Jumlah Top Up</th>
+                                <th>Keterangan</th>
                             </thead>
                             <tbody>
                                 @foreach($data as $key => $d)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{ $d->idplayer }}</td>
-                                    <td>{{ $d->playername }}</td>
-                                    <td>{{ $d->topupdate }}</td>
+                                    <td>{{ $d->tgl_deposit }}</td>
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
-                                    <td>{{ $d->topup_status }}</td>
+                                    <td>{{ $d->keterangan }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
@@ -111,3 +107,4 @@
     })
 </script>
 @endsection
+

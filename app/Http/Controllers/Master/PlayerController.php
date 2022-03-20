@@ -31,7 +31,8 @@ class PlayerController extends Controller
                 'playerid'   => $request['idplayer'],
                 'playername' => $request['namaplayer'],
                 'bankname'   => $request['namabank'],
-                'bankacc'    => $request['norek']
+                'bankacc'    => $request['norek'],
+                'afiliator'  => $request['afiliator']
             );
             array_push($output, $menuroledata);
             insertOrUpdate($output,'players');
@@ -49,7 +50,8 @@ class PlayerController extends Controller
             DB::table('players')->where('playerid', $request['idplayer'])->update([
                 'playername' => $request['namaplayer'],
                 'bankname'   => $request['namabank'],
-                'bankacc'    => $request['norek']
+                'bankacc'    => $request['norek'],
+                'afiliator'  => $request['afiliator']
             ]);
             DB::commit();
             return Redirect::to("/master/player")->withSuccess('Master Player diubah');

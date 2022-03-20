@@ -87,6 +87,12 @@
                                     <input type="text" name="norek" class="form-control" autocomplete="off" required>
                                 </div>
                             </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="form-group">
+                                    <label for="afiliator">Kode Afiliator</label>
+                                    <input type="text" name="afiliator" class="form-control" autocomplete="off" required>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

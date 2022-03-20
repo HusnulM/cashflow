@@ -87,6 +87,12 @@
                                     <input type="text" name="norek" class="form-control" value="{{ $data->bankacc }}" autocomplete="off" required>
                                 </div>
                             </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="form-group">
+                                    <label for="afiliator">Afiliator</label>
+                                    <input type="text" name="afiliator" class="form-control" value="{{ $data->afiliator }}" autocomplete="off" required>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

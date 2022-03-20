@@ -66,17 +66,21 @@
                         <table id="tbl-users" class="table table-bordered table-striped table-hover table-sm">
                             <thead>
                                 <th>No.</th>
-                                <th>Tanggal</th>
+                                <th>ID Player</th>
+                                <th>Nama Player</th>
+                                <th>Tanggal Deposit</th>
                                 <th>Jumlah Deposit</th>
-                                <th>Keterangan</th>
+                                <th>Status Deposit</th>
                             </thead>
                             <tbody>
                                 @foreach($data as $key => $d)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{ $d->tgl_deposit }}</td>
+                                    <td>{{ $d->idplayer }}</td>
+                                    <td>{{ $d->playername }}</td>
+                                    <td>{{ $d->topupdate }}</td>
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
-                                    <td>{{ $d->keterangan }}</td>
+                                    <td>{{ $d->topup_status }}</td>
                                 </tr>
                                 @endforeach
                             </tbody>
