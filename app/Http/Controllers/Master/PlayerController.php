@@ -3,19 +3,28 @@
 namespace App\Http\Controllers\Master;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+use App\Imports\PlayerImport;
+use App\Models\Player;
 use Validator,Redirect,Response;
 use DB;
+use Excel;
+use Auth;
 
 class PlayerController extends Controller
 {
     public function index(){
-        $data = DB::table('players')->get();
+        $data = DB::table('v_players')->get();
         return view('master.player.index', ['data' => $data]);
     }
 
     public function create(){
         return view('master.player.create');
+    }
+
+    public function upload(){
+        return view('master.player.upload');
     }
 
     public function edit($id){
@@ -70,6 +79,33 @@ class PlayerController extends Controller
         }catch(\Exception $e){
             DB::rollBack();
             return Redirect::to("/master/player")->withError($e->getMessage());
+        }
+    }
+
+    public function importPlayer(Request $request){
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        // membuat nama file unik
+        $nama_file = $file->hashName();        
+
+        $destinationPath = 'excel/';
+        $file->move($destinationPath,$file->getClientOriginalName());
+
+        config(['excel.import.startRow' => 2]);
+        // import data
+        $import = Excel::import(new PlayerImport(), 'excel/'.$file->getClientOriginalName());
+
+        //remove from server
+		unlink('excel/'.$file->getClientOriginalName());
+
+        if($import) {
+            return Redirect::to("/master/player")->withSuccess('Data Player Berhasil di Upload');
+        } else {
+            return Redirect::to("/master/player")->withError('Error');
         }
     }
 }

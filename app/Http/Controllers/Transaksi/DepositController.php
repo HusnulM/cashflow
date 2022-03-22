@@ -13,7 +13,7 @@ class DepositController extends Controller
 {
     public function index(){
         // $data = DB::table('players')->get();
-        $bank = DB::table('banks')->get();
+        $bank = DB::table('v_banks')->get();
         return view('transactions.deposit.index', ['bank' => $bank]);
     }
 

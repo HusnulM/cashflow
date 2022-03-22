@@ -95,10 +95,12 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['prefix' => '/master/player'], function () {
             Route::get('/',            'Master\PlayerController@index')->middleware('checkAuth:master/player');
             Route::get('/create',      'Master\PlayerController@create')->middleware('checkAuth:master/player');
+            Route::get('/upload',      'Master\PlayerController@upload')->middleware('checkAuth:master/player');
             Route::get('/edit/{id}',   'Master\PlayerController@edit')->middleware('checkAuth:master/player');
             Route::post('/save',       'Master\PlayerController@save')->middleware('checkAuth:master/player');
             Route::post('/update',     'Master\PlayerController@update')->middleware('checkAuth:master/player');
             Route::get('/delete/{id}', 'Master\PlayerController@delete')->middleware('checkAuth:master/player');
+            Route::post('/upload/save','Master\PlayerController@importPlayer')->middleware('checkAuth:master/player');
         });
 
         Route::group(['prefix' => '/transaksi/deposit'], function () {
@@ -140,7 +142,10 @@ Route::group(['middleware' => 'auth'], function () {
         Route::group(['prefix' => '/laporan'], function () {
             Route::get('/topup',            'Reports\ReportController@reportTopup')->middleware('checkAuth:laporan/topup');
             Route::get('/withdraw',         'Reports\ReportController@reportWithdraw')->middleware('checkAuth:laporan/withdraw');
-            Route::get('/mutasi',           'Reports\ReportController@reportMutasi')->middleware('checkAuth:laporan/mutasi');
+            
+            Route::get('/mutasi',                     'Reports\ReportController@reportMutasi')->middleware('checkAuth:laporan/mutasi');
+            Route::get('/mutasiview/{p1}/{p2}/{p3}',  'Reports\ReportController@reportMutasiView')->middleware('checkAuth:laporan/mutasi');
+
             Route::get('/pemasukan',        'Reports\ReportController@reportPemasukan')->middleware('checkAuth:laporan/pemasukan');
             Route::get('/pengeluaran',      'Reports\ReportController@reportPengeluaran')->middleware('checkAuth:laporan/pengeluaran');
             Route::get('/deposit',          'Reports\ReportController@reportDeposit')->middleware('checkAuth:laporan/deposit');

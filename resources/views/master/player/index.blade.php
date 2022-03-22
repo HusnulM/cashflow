@@ -34,6 +34,10 @@
                     <a href="/master/player/create" class="btn btn-primary btn-sm"> 
                         <i class="fa fa-plus"></i> Tambah Player
                     </a>
+
+                    <a href="/master/player/upload" class="btn btn-primary btn-sm"> 
+                        <i class="fa fa-upload"></i> Upload Player
+                    </a>
                 </div>
             </div>
             <div class="card-body">
@@ -77,7 +81,19 @@
                                 @foreach($data as $key => $d)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{ $d->playerid }}</td>
+                                    @if($d->totalafiliator <= 10)
+                                    <td style="background-color:red; color:white;">
+                                        {{ $d->playerid }}
+                                    </td>
+                                    @elseif($d->totalafiliator > 10 && $d->totalafiliator <= 49)
+                                    <td style="background-color:green; color:white;">
+                                        {{ $d->playerid }}
+                                    </td>
+                                    @elseif($d->totalafiliator >= 50)
+                                    <td style="background-color:blue; color:white;">
+                                        {{ $d->playerid }}
+                                    </td>
+                                    @endif
                                     <td>{{ $d->playername }}</td>
                                     <td>{{ $d->bankname }}</td>
                                     <td>{{ $d->bankacc }}</td>

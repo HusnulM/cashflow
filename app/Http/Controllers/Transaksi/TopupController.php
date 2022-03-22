@@ -13,7 +13,7 @@ use Auth;
 class TopupController extends Controller
 {
     public function index(){
-        $bank = DB::table('banks')->get();
+        $bank = DB::table('v_banks')->get();
         return view('transactions.topup.index', ['bank' => $bank]);
     }
 

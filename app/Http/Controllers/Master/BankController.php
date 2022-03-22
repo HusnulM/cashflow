@@ -11,7 +11,7 @@ use Auth;
 class BankController extends Controller
 {
     public function index(){
-        $data = DB::table('banks')->get();
+        $data = DB::table('v_banks')->get();
         return view('master.bank.index', ['data' => $data]);
     }
 
@@ -20,7 +20,7 @@ class BankController extends Controller
     }
 
     public function edit($id){
-        $data = DB::table('banks')->where('id', $id)->first();
+        $data = DB::table('v_banks')->where('id', $id)->first();
         return view('master.bank.edit', ['data' => $data]);
     }
 

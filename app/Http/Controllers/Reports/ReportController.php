@@ -21,7 +21,28 @@ class ReportController extends Controller
     }
 
     public function reportMutasi(){
-        $data = DB::table('cashflows')->orderBy('to_acc','ASC')->orderBy('id','ASC')->get();
+        $data = DB::table('v_banks')->get();
+        return view('reports.mutasisel', ['bank' => $data]);
+    }
+
+    public function reportMutasiView($bankid, $strdate, $enddate){
+        $query = DB::table('cashflows');
+        if($bankid != 'all'){
+            $query->where('to_acc', $bankid);
+        }
+
+        if($strdate != 'null' && $enddate != 'null'){
+            $query->whereBetween('transdate', [$strdate, $enddate]);
+        }elseif($strdate != 'null' && $enddate == 'null'){
+            $query->where('transdate', $strdate);
+        }elseif($strdate == 'null' && $enddate != 'null'){
+            $query->where('transdate', $enddate);
+        }
+
+        $data = $query
+                ->orderBy('to_acc','ASC')
+                ->orderBy('id','ASC')
+                ->get();
         return view('reports.mutasi', ['data' => $data]);
     }
 

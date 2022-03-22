@@ -31,9 +31,6 @@
                         <i class="fas fa-minus"></i>
                     </button> -->
                     
-                    <a href="/laporan/mutasi" class="btn btn-primary btn-sm"> 
-                        <i class="fa fa-arrow-left"></i> Kembali
-                    </a>
                 </div>
             </div>
             <div class="card-body">
@@ -62,53 +59,75 @@
                 </div>
                     
                 <div class="row">
-                    <div class="table-responsive">
-                        <table id="tbl-users" class="table table-bordered table-striped table-hover table-sm">
-                            <thead>
-                                <th>No.</th>
-                                <th>Tanggal</th>
-                                <th>Keterangan</th>
-                                <th>No. Rekening</th>
-                                <th>Debit</th>
-                                <th>Kredit</th>
-                                <th>Saldo Akhir</th>
-                            </thead>
-                            <tbody>
-                                @foreach($data as $key => $d)
-                                <tr>
-                                    <td>{{$key+1}}</td>
-                                    <td>{{ $d->transdate }}</td>
-                                    <td>{{ $d->note }}</td>
-                                    <td>{{ $d->to_acc }}</td>
-                                    <td style="text-align:right;">{{ number_format($d->debit,0,'.',',') }}</td>
-                                    <td style="text-align:right;">{{ number_format($d->credit,0,'.',',') }}</td>
-                                    <td style="text-align:right;">{{ number_format($d->balance,0,'.',',') }}</td>
-                                </tr>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="rekening">Rekening</label>
+                            <select name="rekening" id="rekening" class="form-control" required>
+                                <option value="all">Pilih Rekening</option>
+                                @foreach($bank as $b)
+                                <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }}</option>
                                 @endforeach
-                            </tbody>
-                        </table>
+                            </select>
+                        </div>
                     </div>
                 </div>
+
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="strdate">Dari Tanggal</label>
+                            <input type="date" name="strdate" id="strdate" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="enddate">Sampai Tanggal</label>
+                            <input type="date" name="enddate" id="enddate" class="form-control">
+                        </div>
+                    </div>
+                </div>
+
             </div>
             <div class="card-footer">
-                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-primary pull-right" id="btn-search">
+                            <i class="fa fa-search"></i> Tampilkan Data
+                        </button>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>
-</div>    
+</div>
 @endsection
 
 @section('additional-js')
 <script>
+    $(document).keypress(
+        function(event){
+        if (event.which == '13') {
+            event.preventDefault();
+        }
+
+    });
+    
     $(function(){
-        $('#tbl-users').DataTable({
-            // "paging": true,
-            // "lengthChange": false,
-            // "searching": false,
-            // "ordering": true,
-            // "info": true,
-            // "autoWidth": false,
-            // "responsive": true,
+        $('#btn-search').on('click', function(){
+            var _Bankid = $('#rekening').val();
+            var _Strdate = $('#strdate').val();
+            var _Enddate = $('#enddate').val();
+            if(_Strdate == ''){
+                _Strdate = 'null';
+                // alert('Tanggal tidak boleh kosong');
+            }
+            
+            if(_Enddate == ''){
+                _Enddate = 'null';
+            }
+            window.location.href = base_url+'/laporan/mutasiview/'+_Bankid+'/'+_Strdate+'/'+_Enddate
+            // alert(_Bankid + ' - ' + _Strdate + ' - ' + _Enddate);
         });
     })
 </script>
