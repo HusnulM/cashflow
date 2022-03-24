@@ -5,7 +5,9 @@ namespace App\Http\Controllers\Transaksi;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File; 
+use App\Imports\DepositImport;
 use Validator,Redirect,Response;
+use Excel;
 use DB;
 use Auth;
 
@@ -15,6 +17,10 @@ class DepositController extends Controller
         // $data = DB::table('players')->get();
         $bank = DB::table('v_banks')->get();
         return view('transactions.deposit.index', ['bank' => $bank]);
+    }
+
+    public function upload(){
+        return view('transactions.deposit.upload');
     }
 
     public function verify(){
@@ -145,6 +151,33 @@ class DepositController extends Controller
         }catch(\Exception $e){
             DB::rollBack();
             return Redirect::to("/transaksi/deposit/verify")->withError($e->getMessage());
+        }
+    }
+
+    public function importDeposit(Request $request){
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        // membuat nama file unik
+        $nama_file = $file->hashName();        
+
+        $destinationPath = 'excel/';
+        $file->move($destinationPath,$file->getClientOriginalName());
+
+        config(['excel.import.startRow' => 2]);
+        // import data
+        $import = Excel::import(new DepositImport(), 'excel/'.$file->getClientOriginalName());
+
+        //remove from server
+		unlink('excel/'.$file->getClientOriginalName());
+
+        if($import) {
+            return Redirect::to("/transaksi/deposit")->withSuccess('Data Deposit Berhasil di Upload');
+        } else {
+            return Redirect::to("/transaksi/deposit")->withError('Error');
         }
     }
 }

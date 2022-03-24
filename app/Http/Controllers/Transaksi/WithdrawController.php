@@ -8,12 +8,13 @@ use Illuminate\Support\Facades\File;
 use Validator,Redirect,Response;
 use DB;
 use Auth;
+use Excel;
 
 class WithdrawController extends Controller
 {
     public function index(){
-        $bank = DB::table('banks')->get();
-        return view('transactions.withdraw.index', ['bank' => $bank]);
+        $bank = DB::table('v_banks')->get();
+        return view('transactions.withdraw.withdraw', ['bank' => $bank]);
     }
 
     public function verify(){

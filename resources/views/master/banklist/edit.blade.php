@@ -1,6 +1,6 @@
 @extends('templates/main')
 
-@section('title', 'Tambah Master Bank')
+@section('title', 'Edit Master Bank')
 
 @section('header-content')
 <!-- <div class="content-header">
@@ -21,15 +21,15 @@
 @endsection
 
 @section('content')
-<form action="{{ url('master/bank/save') }}" method="post">
+<form action="{{ url('master/banklist/update') }}" method="post">
     @csrf
     <div class="row">
         <div class="col-lg-12 mt-2">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Tambah Master Bank</h3>
+                    <h3 class="card-title">Edit Master Bank</h3>
                     <div class="card-tools">                        
-                        <a href="/master/bank" class="btn btn-danger btn-sm"> 
+                        <a href="/master/banklist" class="btn btn-danger btn-sm"> 
                             <i class="fa fa-arrow-alt-circle-left"></i> Kembali
                         </a>
                         <button type="submit" class="btn btn-primary btn-sm"> 
@@ -65,50 +65,15 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="kodebank">Kode Bank</label>
-                                <select name="kodebank" id="kodebank" class="form-control">
-                                    <option value="">Pilih Kode Bank</option>
-                                    @foreach($banklist as $bank)
-                                    <option value="{{ $bank->bankid }}">{{ $bank->bankid }} - {{ $bank->deskripsi }}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" name="kodebank" class="form-control" value="{{ $data->bankid }}" readonly>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-8 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="namabank">Nama Bank</label>
-                                <input type="text" name="namabank" class="form-control" autocomplete="off" required>
+                                <input type="text" name="namabank" class="form-control" value="{{ $data->deskripsi }}" autocomplete="off" required>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="saldoawal">Saldo Awal</label>
-                                <input type="text" name="saldoawal" class="form-control" autocomplete="off" required>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="norek">Nomor Rekening</label>
-                                <input type="text" name="norek" class="form-control" autocomplete="off" required>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="atasnama">Atas Nama</label>
-                                <input type="text" name="atasnama" class="form-control" autocomplete="off" required>
-                            </div>
-                        </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
-                            <div class="form-group">
-                                <label for="tipebank">Tipe</label>
-                                <select name="tipebank" id="tipebank" class="form-control">
-                                    <option value=""></option>
-                                    <option value="Depo">Depo</option>
-                                    <option value="WD">WD</option>
-                                </select>
-                            </div>
-                        </div>                        
                     </div>
                 </div>
                 <div class="card-footer">

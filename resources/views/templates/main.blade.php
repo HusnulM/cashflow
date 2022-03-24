@@ -175,6 +175,8 @@
 <!-- AdminLTE App -->
 <script src="/js/adminlte.js"></script>
 
+<script src="/assets/select2/select2.min.js"></script>
+
 <script>
   $(function(){
     setTimeout(function(){ 

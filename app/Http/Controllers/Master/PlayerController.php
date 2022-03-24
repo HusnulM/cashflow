@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Master;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Http\Request;
+// use App\Traits\JsonResponser;
 use App\Imports\PlayerImport;
 use App\Models\Player;
 use Validator,Redirect,Response;
@@ -14,6 +15,8 @@ use Auth;
 
 class PlayerController extends Controller
 {
+    // use JsonResponser;
+
     public function index(){
         $data = DB::table('v_players')->get();
         return view('master.player.index', ['data' => $data]);
@@ -30,6 +33,26 @@ class PlayerController extends Controller
     public function edit($id){
         $data = DB::table('players')->where('playerid', $id)->first();
         return view('master.player.edit', ['data' => $data]);
+    }
+
+    public function searchByname(Request $request){
+        // return $request->query('term');
+        $data = DB::table('players')
+        // ->select('playerid','name1')
+        ->distinct()
+        ->where('playername', 'LIKE', '%'. $request->query('term') . '%')
+        ->get();
+
+        $output = array(
+            'code'    => 200,
+            'message' => 'Berhasil mengambil data',
+            'data'    => $data
+        );
+
+        return $output;
+        //return $this->successResponse('Berhasil mengambil data', $data);
+        // return ('Berhasil mengambil data', $data);
+        // return response('Berhasil mengambil data', 200)->header('Content-Type', 'application/json');
     }
 
     public function save(Request $request){

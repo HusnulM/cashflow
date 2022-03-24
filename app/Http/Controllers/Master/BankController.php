@@ -12,11 +12,13 @@ class BankController extends Controller
 {
     public function index(){
         $data = DB::table('v_banks')->get();
-        return view('master.bank.index', ['data' => $data]);
+        $banklist = DB::table('bank_lists')->get();
+        return view('master.bank.index', ['data' => $data, 'banklist' => $banklist]);
     }
 
     public function create(){
-        return view('master.bank.create');
+        $banklist = DB::table('bank_lists')->get();
+        return view('master.bank.create', ['banklist' => $banklist]);
     }
 
     public function edit($id){

@@ -83,6 +83,24 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/bank/delete/{id}','Master\BankController@delete')->middleware('checkAuth:master/bank');
         });
 
+        Route::group(['prefix' => '/master/banklist'], function () {
+            Route::get('/',           'Master\BankListController@index')->middleware('checkAuth:master/banklist');
+            Route::get('/create',     'Master\BankListController@create')->middleware('checkAuth:master/banklist');
+            Route::get('/edit/{id}',  'Master\BankListController@edit')->middleware('checkAuth:master/banklist');
+            Route::post('/save',      'Master\BankListController@save')->middleware('checkAuth:master/banklist');
+            Route::post('/update',    'Master\BankListController@update')->middleware('checkAuth:master/banklist');
+            Route::get('/delete/{id}','Master\BankListController@delete')->middleware('checkAuth:master/banklist');
+        });
+
+        Route::group(['prefix' => '/master/biayaadmin'], function () {
+            Route::get('/',                'Master\BiayaTransferBank@index')->middleware('checkAuth:master/biayaadmin');
+            Route::get('/create',          'Master\BiayaTransferBank@create')->middleware('checkAuth:master/biayaadmin');
+            Route::get('/edit/{p1}/{p2}',  'Master\BiayaTransferBank@edit')->middleware('checkAuth:master/biayaadmin');
+            Route::post('/save',           'Master\BiayaTransferBank@save')->middleware('checkAuth:master/biayaadmin');
+            Route::post('/update',         'Master\BiayaTransferBank@update')->middleware('checkAuth:master/biayaadmin');
+            Route::get('/delete/{p1}/{p2}','Master\BiayaTransferBank@delete')->middleware('checkAuth:master/biayaadmin');
+        });
+
         Route::group(['prefix' => '/master/coa'], function () {
             Route::get('/',           'Master\CoaController@index')->middleware('checkAuth:master/coa');
             Route::get('/create',     'Master\CoaController@create')->middleware('checkAuth:master/coa');
@@ -101,11 +119,16 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/update',     'Master\PlayerController@update')->middleware('checkAuth:master/player');
             Route::get('/delete/{id}', 'Master\PlayerController@delete')->middleware('checkAuth:master/player');
             Route::post('/upload/save','Master\PlayerController@importPlayer')->middleware('checkAuth:master/player');
+            Route::get('/searchbyname','Master\PlayerController@searchByname')->middleware('checkAuth:master/player');
+            // master/player/searchbyname
         });
 
         Route::group(['prefix' => '/transaksi/deposit'], function () {
             Route::get('/',            'Transaksi\DepositController@index')->middleware('checkAuth:transaksi/deposit');
             Route::post('/save',       'Transaksi\DepositController@save')->middleware('checkAuth:transaksi/deposit');
+
+            Route::get('/upload',      'Transaksi\DepositController@upload')->middleware('checkAuth:transaksi/deposit');
+            Route::post('/upload/save','Transaksi\DepositController@importDeposit')->middleware('checkAuth:transaksi/deposit');
 
             Route::get('/verify',      'Transaksi\DepositController@verify')->middleware('checkAuth:transaksi/deposit/verify');
             Route::get('/close/{id}',  'Transaksi\DepositController@close')->middleware('checkAuth:transaksi/deposit/verify');
