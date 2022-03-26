@@ -85,6 +85,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="namabank">Nama Bank</label>
+                                <input type="hidden" name="bankid" id="bankid">
                                 <input type="text" name="namabank" class="form-control" readonly>
                             </div>
                         </div>
@@ -109,10 +110,17 @@
                             <div class="form-group">
                                 <label for="rekening">Rekening Sumber Dana</label>
                                 <select name="rekening" id="rekening" class="form-control" required>
+                                    <option value="">Pilih Rekening Sumber Dana</option>
                                     @foreach($bank as $b)
                                     <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }} | Saldo : {{ number_format($b->saldo,0,'.',',') }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="biaya_adm">Biaya Admin</label>
+                                <input type="text" name="biaya_adm" id="biaya_adm" class="form-control" value="0">
                             </div>
                         </div>
                     </div>
@@ -163,9 +171,9 @@
         console.log(data);
         $('input[name=idplayer]').val(data.id);
         $('input[name=namaplayer]').val(data.text);
-        $('input[name=namabank]').val(data.bankname);
+        $('input[name=namabank]').val(data.bankid + ' | ' + data.bankname);
         $('input[name=nomor_rek]').val(data.bankacc);
-
+        $('input[name=bankid]').val(data.bankid);
         document.getElementById("jmlwd").focus();
     });
 
@@ -177,7 +185,41 @@
     });
 
     $(function(){
+        $('#rekening').on('change', function(){
+            // alert(this.value)
+            var bankid = this.value;
+            (async () => {
+                const rawResponse = await fetch(base_url+'/master/bank/detail/'+bankid, {
+                    method: 'GET',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    }
+                });
+                const content = await rawResponse.json();
+                console.log(content)
+                var fromBank = content.bankid;
+                var toBank   = $('#bankid').val();
 
+                getBiayaAdmin(fromBank, toBank);
+            })();
+        });
+
+        function getBiayaAdmin(_from, _to){
+            // biayaadm
+            (async () => {
+                const rawResponse = await fetch(base_url+'/master/bank/biayaadm/'+_from+'/'+_to, {
+                    method: 'GET',
+                    headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                    }
+                });
+                const content = await rawResponse.json();
+                console.log(content)
+                $('input[name=biaya_adm]').val(content.biaya_adm);
+            })();
+        }
     });
 </script>
 @endsection

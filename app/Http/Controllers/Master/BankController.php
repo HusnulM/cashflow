@@ -117,4 +117,17 @@ class BankController extends Controller
             return Redirect::to("/master/bank")->withError($e->getMessage());
         }
     }
+
+    public function detail($bankacc){
+        $data = DB::table('v_banks')->where('bank_accountnumber', $bankacc)->first();
+        return $data;
+    }
+
+    public function getbiayaadm($from, $to){
+        $data = DB::table('biaya_adm_tf')
+                ->where('bank_asal',$from)
+                ->where('bank_tujuan',$to)
+                ->first();
+        return $data;
+    }
 }

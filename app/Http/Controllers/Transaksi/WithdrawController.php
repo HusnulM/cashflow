@@ -18,7 +18,7 @@ class WithdrawController extends Controller
     }
 
     public function verify(){
-        $data = DB::table('withdraws')->where('wd_status', 'Open')->get();
+        $data = DB::table('v_withdraws')->where('wd_status', 'Open')->get();
         return view('transactions.withdraw.verify', ['data' => $data]);
     }
 
@@ -30,34 +30,51 @@ class WithdrawController extends Controller
             //     File::makeDirectory($destinationPath, 0755, true, true);
             // }
 
-            $output = array();
-            $playerid = $request['itm_idplayer'];
-            $nmayerid = $request['itm_nmplayer'];
-            $jmltopup = $request['itm_jmltopup'];
-            $tgltopup = $request['itm_tgltopup'];
-            $rekening = $request['itm_rekening'];
-            // $xfile    = $request->file('itm_efile');
+            // $output = array();
+            // $playerid = $request['itm_idplayer'];
+            // $nmayerid = $request['itm_nmplayer'];
+            // $jmltopup = $request['itm_jmltopup'];
+            // $tgltopup = $request['itm_tgltopup'];
+            // $rekening = $request['itm_rekening'];
             
-            for($i = 0; $i < sizeof($playerid); $i++){
-                // $file = $xfile[$i];
-                
-                $insertData = array(
-                    'idplayer'     => $playerid[$i],
-                    'playername'   => $nmayerid[$i],
-                    'amount'       => $jmltopup[$i],
-                    'wdpdate'      => $tgltopup[$i],
-                    'wd_status'    => 'Open',
-                    'rekening_sumber' => $rekening[$i],
-                    // 'efile'        => $file->getClientOriginalName(),
-                    'createdby'    => Auth::user()->name,
-                    'created_at'   => now()
-                );
-                array_push($output, $insertData);
-
-                // if(!empty($file)){
-                //     $file->move($destinationPath,$file->getClientOriginalName());
-                // }
+            // for($i = 0; $i < sizeof($playerid); $i++){
+            //     $insertData = array(
+            //         'idplayer'     => $playerid[$i],
+            //         'playername'   => $nmayerid[$i],
+            //         'amount'       => $jmltopup[$i],
+            //         'wdpdate'      => $tgltopup[$i],
+            //         'wd_status'    => 'Open',
+            //         'rekening_sumber' => $rekening[$i],
+            //         'createdby'    => Auth::user()->name,
+            //         'created_at'   => now()
+            //     );
+            //     array_push($output, $insertData);
+            // }
+            $latestSaldo = 0;
+            $saldo = DB::table('cashflows')->where('to_acc',$request['rekening'])->limit(1)->orderBy('id','DESC')->first();
+            if($saldo){
+                $latestSaldo = $saldo->balance;
             }
+
+            if($latestSaldo < ($request['jmlwd']+$request['biaya_adm'])){
+                DB::rollBack();
+                return Redirect::to("/transaksi/withdraw")->withError('Saldo Rek '. $request['rekening'] . ' tidak mencukupi');
+            }
+
+            $output = array();
+            $insertData = array(
+                'idplayer'     => $request['idplayer'],
+                'playername'   => $request['namaplayer'],
+                'amount'       => $request['jmlwd'],
+                'biaya_adm'    => $request['biaya_adm'],
+                'wdpdate'      => $request['tglwd'],
+                'wd_status'    => 'Open',
+                'rekening_sumber' => $request['rekening'],
+                'createdby'    => Auth::user()->name,
+                'created_at'   => now()
+            );
+            array_push($output, $insertData);
+
             insertOrUpdate($output,'withdraws');
             DB::commit();
 
@@ -72,17 +89,17 @@ class WithdrawController extends Controller
     public function close($id){
         DB::beginTransaction();
         try{
-            DB::table('withdraws')->where('id', $id)->update([
-                'wd_status' => 'Close',
-                'updated_at'   => now()
-            ]);
-
-            $wdData = DB::table('withdraws')->where('id', $id)->first();
+            $wdData = DB::table('v_withdraws')->where('id', $id)->first();
 
             $latestSaldo = 0;
             $saldo = DB::table('cashflows')->where('to_acc',$wdData->rekening_sumber)->limit(1)->orderBy('id','DESC')->first();
             if($saldo){
                 $latestSaldo = $saldo->balance;
+            }
+
+            if($latestSaldo < $wdData->amount){
+                DB::rollBack();
+                return Redirect::to("/transaksi/withdraw")->withError('Saldo Rek '. $wdData->rekening_sumber . ' tidak mencukupi');
             }
 
             $castFlow = array();
@@ -100,6 +117,23 @@ class WithdrawController extends Controller
             array_push($castFlow, $insertcastFlow);
             insertOrUpdate($castFlow,'cashflows');
 
+            if($wdData->biaya_adm > 0){
+                $castFlow = array();
+                $insertcastFlow = array(
+                    'transdate'     => now(),
+                    'note'          => 'Biaya Admin WD player '. $wdData->idplayer,
+                    'from_acc'      => '',
+                    'to_acc'        => $wdData->rekening_sumber,
+                    'debit'         => $wdData->biaya_adm,
+                    'credit'        => 0,
+                    'balance'       => $latestSaldo-$wdData->amount-$wdData->biaya_adm,
+                    'createdby'     => Auth::user()->name,
+                    'created_at'    => now()
+                );
+                array_push($castFlow, $insertcastFlow);
+                insertOrUpdate($castFlow,'cashflows');
+            }
+
             //Update Stock coin
             $stockCoint = 0;
             $bankData = DB::table('banks')->where('bank_accountnumber', $wdData->rekening_sumber)->first();
@@ -112,6 +146,11 @@ class WithdrawController extends Controller
                 ]);
             }
             // $coinData = DB::table('coin_stocks')->where('id',$wdData->idplayer)->first();
+
+            DB::table('withdraws')->where('id', $id)->update([
+                'wd_status' => 'Close',
+                'updated_at'   => now()
+            ]);
 
             DB::commit();            
             return Redirect::to("/transaksi/withdraw/verify")->withSuccess('Withdraw Berhasil di proses');

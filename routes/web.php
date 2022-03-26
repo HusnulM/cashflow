@@ -74,13 +74,15 @@ Route::group(['middleware' => 'auth'], function () {
             Route::get('/userroles/delete/{user}/{role}', 'Setting\UserRoleController@delete')->middleware('checkAuth:setting/userroles');
         });
 
-        Route::group(['prefix' => '/master'], function () {
-            Route::get('/bank',            'Master\BankController@index')->middleware('checkAuth:master/bank');
-            Route::get('/bank/create',     'Master\BankController@create')->middleware('checkAuth:master/bank');
-            Route::get('/bank/edit/{id}',  'Master\BankController@edit')->middleware('checkAuth:master/bank');
-            Route::post('/bank/save',      'Master\BankController@save')->middleware('checkAuth:master/bank');
-            Route::post('/bank/update',    'Master\BankController@update')->middleware('checkAuth:master/bank');
-            Route::get('/bank/delete/{id}','Master\BankController@delete')->middleware('checkAuth:master/bank');
+        Route::group(['prefix' => '/master/bank'], function () {
+            Route::get('/',           'Master\BankController@index')->middleware('checkAuth:master/bank');
+            Route::get('/create',     'Master\BankController@create')->middleware('checkAuth:master/bank');
+            Route::get('/edit/{id}',  'Master\BankController@edit')->middleware('checkAuth:master/bank');
+            Route::post('/save',      'Master\BankController@save')->middleware('checkAuth:master/bank');
+            Route::post('/update',    'Master\BankController@update')->middleware('checkAuth:master/bank');
+            Route::get('/delete/{id}','Master\BankController@delete')->middleware('checkAuth:master/bank');
+            Route::get('/detail/{id}','Master\BankController@detail')->middleware('checkAuth:master/bank');
+            Route::get('/biayaadm/{p1}/{p2}','Master\BankController@getbiayaadm')->middleware('checkAuth:master/bank');
         });
 
         Route::group(['prefix' => '/master/banklist'], function () {

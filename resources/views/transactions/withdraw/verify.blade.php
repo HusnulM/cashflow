@@ -46,11 +46,13 @@
                             <thead>
                                 <th>No.</th>
                                 <th>ID Player</th>
-                                <th>Nama Player</th>
-                                <th>Jumlah Withdraw</th>
+                                <th>Nama Player</th>                                
                                 <th>Tanggal Withdraw</th>
-                                <!-- <th>Bukti Transfer</th> -->
-                                <th style="width:170px;"></th>
+                                <th>Rekening Sumber Dana</th>
+                                <th>Rekening Tujuan</th>
+                                <th>Jumlah Withdraw</th>
+                                <th>Biaya Admin</th>
+                                <th style="width:100px;"></th>
                             </thead>
                             <tbody>
                                 @foreach($data as $key => $d)
@@ -58,8 +60,12 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{ $d->idplayer }}</td>
                                     <td>{{ $d->playername }}</td>
-                                    <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
+                                    
                                     <td>{{ $d->wdpdate }}</td>
+                                    <td>{{ $d->bank_sumbername }} | {{ $d->rekening_sumber }}</td>
+                                    <td>{{ $d->bankname }} | {{ $d->bankacc }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->biaya_adm,0,'.',',') }}</td>
                                     <!-- <td>
                                         <a href="/efiles/topupfiles/{{ $d->efile }}" target="_blank">{{ $d->efile }}</a>
                                     </td> -->

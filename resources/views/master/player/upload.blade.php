@@ -16,7 +16,10 @@
                     <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
                     </button> -->
-                    
+                    <a href="/excel/template/Template Upload Player.xlsx" target="_blank" class="btn btn-primary btn-sm"> 
+                        <i class="fa fa-download"></i> Download Template
+                    </a>
+
                     <a href="/master/player" class="btn btn-primary btn-sm"> 
                         <i class="fa fa-arrow-left"></i> Kembali
                     </a>

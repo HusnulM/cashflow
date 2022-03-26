@@ -183,6 +183,8 @@
       $('.msgAlert').hide();
     }, 5000);
   });
+
+  var base_url = window.location.origin;
 </script>
 
 @yield('additional-js')

@@ -15,7 +15,7 @@ class DepositController extends Controller
 {
     public function index(){
         // $data = DB::table('players')->get();
-        $bank = DB::table('v_banks')->get();
+        $bank = DB::table('v_coin_stocks')->get();
         return view('transactions.deposit.index', ['bank' => $bank]);
     }
 
@@ -66,36 +66,42 @@ class DepositController extends Controller
             //     // }
             // }
             // insertOrUpdate($output,'topups');
+
+            $stock = DB::table('v_coin_stocks')->where('bank_accountnumber', $request->rekening)->first();
+            if($stock->totalcoin < ($request->jmltopup+$request->bonustopup)){
+                return Redirect::to("/transaksi/deposit")->withError('Stock Coin Rek '. $request->rekening . ' tidak mencukupi');
+            }else{
+                $topupData = array();
+                $insertData = array(
+                    'idplayer'     => $request->idplayer,
+                    'playername'   => $request->namaplayer,
+                    'amount'       => $request->jmltopup,
+                    'topup_bonus'  => $request->bonustopup ?? 0,
+                    'topupdate'    => $request->tgltopup,
+                    'topup_status' => 'Open',
+                    'rekening_tujuan' => $request->rekening,
+                    'createdby'    => Auth::user()->name,
+                    'created_at'   => now()
+                );
+                array_push($topupData, $insertData);
+                insertOrUpdate($topupData,'topups');
+
+                DB::commit();
+
+                return Redirect::to("/transaksi/deposit")->withSuccess('Deposit Berhasil di input');
+            }
+
+            // $playerdata = array();
+            // $insertPlayer = array(
+            //     'playerid'   => $request['idplayer'],
+            //     'playername' => $request['namaplayer'],
+            //     'bankname'   => $request['namabank'],
+            //     'bankacc'    => $request['nomor_rek']
+            // );
+            // array_push($playerdata, $insertPlayer);
+            // insertOrUpdate($playerdata,'players');
+
             
-            $topupData = array();
-            $insertData = array(
-                'idplayer'     => $request->idplayer,
-                'playername'   => $request->namaplayer,
-                'amount'       => $request->jmltopup,
-                'topup_bonus'  => $request->bonustopup ?? 0,
-                'topupdate'    => $request->tgltopup,
-                'topup_status' => 'Open',
-                'rekening_tujuan' => $request->rekening,
-                'createdby'    => Auth::user()->name,
-                'created_at'   => now()
-            );
-            array_push($topupData, $insertData);
-            insertOrUpdate($topupData,'topups');
-
-            $playerdata = array();
-            $insertPlayer = array(
-                'playerid'   => $request['idplayer'],
-                'playername' => $request['namaplayer'],
-                'bankname'   => $request['namabank'],
-                'bankacc'    => $request['nomor_rek']
-            );
-            array_push($playerdata, $insertPlayer);
-            insertOrUpdate($playerdata,'players');
-
-            DB::commit();
-
-            
-            return Redirect::to("/transaksi/deposit")->withSuccess('Deposit Berhasil di input');
         }catch(\Exception $e){
             DB::rollBack();
             return Redirect::to("/transaksi/deposit")->withError($e->getMessage());
