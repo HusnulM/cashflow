@@ -27,7 +27,7 @@
 <main>
     <div class="container" style="margin-top:100px; border-radius: 50%;">
       <div class="row justify-content-center">
-        <div class="col-lg-6 login-wrapper my-auto login-section-wrapper">
+        <div class="col-lg-6 login-wrapper my-auto login-section-wrapper" style="border-radius: 15px">
         @if(count($errors) > 0)
             @foreach( $errors->all() as $message )
             <div class="alert alert-danger alert-block">

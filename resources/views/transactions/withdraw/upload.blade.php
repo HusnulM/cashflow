@@ -20,7 +20,7 @@
                         <i class="fa fa-download"></i> Download Template
                     </a>
 
-                    <a href="/master/player" class="btn btn-primary btn-sm"> 
+                    <a href="/transaksi/withdraw" class="btn btn-primary btn-sm"> 
                         <i class="fa fa-arrow-left"></i> Kembali
                     </a>
                 </div>
@@ -52,7 +52,7 @@
                     
                 <div class="row">
                     <div class="col-lg-12">
-                        <form action="{{ url('/master/player/upload/save') }}" method="POST" enctype="multipart/form-data">
+                        <form action="{{ url('/transaksi/withdraw/upload/save') }}" method="POST" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
                                 <div class="col-md-10">

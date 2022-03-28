@@ -81,8 +81,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/save',      'Master\BankController@save')->middleware('checkAuth:master/bank');
             Route::post('/update',    'Master\BankController@update')->middleware('checkAuth:master/bank');
             Route::get('/delete/{id}','Master\BankController@delete')->middleware('checkAuth:master/bank');
-            Route::get('/detail/{id}','Master\BankController@detail')->middleware('checkAuth:master/bank');
-            Route::get('/biayaadm/{p1}/{p2}','Master\BankController@getbiayaadm')->middleware('checkAuth:master/bank');
+            Route::get('/detail/{id}','Master\BankController@detail');//->middleware('checkAuth:master/bank');
+            Route::get('/biayaadm/{p1}/{p2}','Master\BankController@getbiayaadm');//->middleware('checkAuth:master/bank');
         });
 
         Route::group(['prefix' => '/master/banklist'], function () {
@@ -121,7 +121,7 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/update',     'Master\PlayerController@update')->middleware('checkAuth:master/player');
             Route::get('/delete/{id}', 'Master\PlayerController@delete')->middleware('checkAuth:master/player');
             Route::post('/upload/save','Master\PlayerController@importPlayer')->middleware('checkAuth:master/player');
-            Route::get('/searchbyname','Master\PlayerController@searchByname')->middleware('checkAuth:master/player');
+            Route::get('/searchbyname','Master\PlayerController@searchByname');//->middleware('checkAuth:master/player');
             // master/player/searchbyname
         });
 
@@ -147,6 +147,9 @@ Route::group(['middleware' => 'auth'], function () {
 
             Route::get('/verify',      'Transaksi\WithdrawController@verify')->middleware('checkAuth:transaksi/withdraw/verify');
             Route::get('/close/{id}',  'Transaksi\WithdrawController@close')->middleware('checkAuth:transaksi/withdraw/verify');
+
+            Route::get('/upload',      'Transaksi\WithdrawController@upload')->middleware('checkAuth:transaksi/withdraw');
+            Route::post('/upload/save','Transaksi\WithdrawController@importWithdraw')->middleware('checkAuth:transaksi/withdraw');
         });
 
         Route::group(['prefix' => '/transaksi/transfer'], function () {

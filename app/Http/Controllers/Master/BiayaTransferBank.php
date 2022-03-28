@@ -18,10 +18,14 @@ class BiayaTransferBank extends Controller
         return view('master.biaya_transfer.create', ['data' => $data]);
     }
 
-    public function edit($id){
-        $data = DB::table('biaya_adm_tf')->where('id', $id)->first();
+    public function edit($p1, $p2){
+        $biaya = DB::table('biaya_adm_tf')->where('bank_asal', $p1)->where('bank_tujuan', $p2)->first();
+        
+        $bankAsal   = DB::table('bank_lists')->where('bankid', $p1)->first();
+        $bankTujuan = DB::table('bank_lists')->where('bankid', $p2)->first();
+        // return $biaya;
         $data = DB::table('bank_lists')->get();
-        return view('master.biaya_transfer.edit', ['data' => $data]);
+        return view('master.biaya_transfer.edit', ['data' => $data, 'asal' => $bankAsal, 'tujuan' => $bankTujuan, 'biaya' => $biaya]);
     }
 
     public function save(Request $request){
@@ -49,7 +53,10 @@ class BiayaTransferBank extends Controller
     public function update(Request $request){
         DB::beginTransaction();
         try{
-            DB::table('biaya_adm_tf')->where('id', $request['id'])->update([
+            DB::table('biaya_adm_tf')
+                ->where('bank_asal',   $request['bank_asal'])
+                ->where('bank_tujuan', $request['bank_tujuan'])
+            ->update([
                 'biaya_adm'        => $request['biaya_adm']
             ]);
             

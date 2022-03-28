@@ -143,7 +143,7 @@
 
     $('#find-player').select2({
         placeholder: 'Type Player Name',
-        minimumInputLength: 5,
+        minimumInputLength: 0,
         ajax: {
             url: base_url + '/master/player/searchbyname',
             dataType: 'json',

@@ -147,7 +147,7 @@
 
     $('#find-player').select2({
         placeholder: 'Type Player Name',
-        minimumInputLength: 5,
+        minimumInputLength: 0,
         ajax: {
             url: base_url + '/master/player/searchbyname',
             dataType: 'json',
@@ -206,6 +206,7 @@
         });
 
         function getBiayaAdmin(_from, _to){
+            $('input[name=biaya_adm]').val('0');
             // biayaadm
             (async () => {
                 const rawResponse = await fetch(base_url+'/master/bank/biayaadm/'+_from+'/'+_to, {

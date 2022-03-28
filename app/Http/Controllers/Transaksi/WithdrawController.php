@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Transaksi;
 
 use App\Http\Controllers\Controller;
+use App\Imports\WithdrawImport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File; 
 use Validator,Redirect,Response;
@@ -15,6 +16,10 @@ class WithdrawController extends Controller
     public function index(){
         $bank = DB::table('v_banks')->get();
         return view('transactions.withdraw.withdraw', ['bank' => $bank]);
+    }
+
+    public function upload(){
+        return view('transactions.withdraw.upload');
     }
 
     public function verify(){
@@ -157,6 +162,33 @@ class WithdrawController extends Controller
         }catch(\Exception $e){
             DB::rollBack();
             return Redirect::to("/transaksi/withdraw/verify")->withError($e->getMessage());
+        }
+    }
+
+    public function importWithdraw(Request $request){
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        $file = $request->file('file');
+
+        // membuat nama file unik
+        $nama_file = $file->hashName();        
+
+        $destinationPath = 'excel/';
+        $file->move($destinationPath,$file->getClientOriginalName());
+
+        config(['excel.import.startRow' => 2]);
+        // import data
+        $import = Excel::import(new WithdrawImport(), 'excel/'.$file->getClientOriginalName());
+
+        //remove from server
+		unlink('excel/'.$file->getClientOriginalName());
+
+        if($import) {
+            return Redirect::to("/transaksi/withdraw")->withSuccess('Data Withdraw Berhasil di Upload');
+        } else {
+            return Redirect::to("/transaksi/withdraw")->withError('Error');
         }
     }
 }
