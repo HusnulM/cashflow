@@ -51,6 +51,7 @@ class PlayerImport implements ToCollection, WithHeadingRow
             $excelData = array(
                 'playerid'      => $row['id_player'] ?? '',
                 'playername'    => $row['nama_player'] ?? '',
+                'bankid'        => $row['kode_bank'] ?? '',
                 'bankname'      => $row['nama_bank'] ?? '',
                 'bankacc'       => $row['nomor_rekening'] ?? '',
                 'afiliator'     => $row['player_afiliator'] ?? '',

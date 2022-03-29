@@ -90,7 +90,7 @@
                         <div class="col-lg-3">
                             <div class="form-group">
                                 <label for="biayaTransfer">Biaya Admin</label>
-                                <input type="text" name="biayaTransfer" class="form-control" value="0">
+                                <input type="text" name="biayaTransfer" class="form-control" value="0" readonly>
                             </div>
                         </div>                        
                     </div>

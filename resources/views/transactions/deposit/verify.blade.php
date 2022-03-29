@@ -50,6 +50,7 @@
                                 <th>Jumlah Deposit</th>
                                 <th>Bonus Deposit</th>
                                 <th>Tanggal Deposit</th>
+                                <th>dibayar Dari</th>
                                 <th>dibayar Ke</th>
                                 <th style="width:170px;"></th>
                             </thead>
@@ -62,7 +63,8 @@
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
                                     <td style="text-align:right;">{{ number_format($d->topup_bonus,0,'.',',') }}</td>
                                     <td>{{ $d->topupdate }}</td>
-                                    <td>{{ $d->rekening_tujuan }}</td>
+                                    <td>{{ $d->bankname }} {{ $d->bankacc }}</td>
+                                    <td>{{ $d->banknameto }} {{ $d->rekening_tujuan }}</td>
                                     <!-- <td>
                                         <a href="/efiles/topupfiles/{{ $d->efile }}" target="_blank">{{ $d->efile }}</a>
                                     </td> -->

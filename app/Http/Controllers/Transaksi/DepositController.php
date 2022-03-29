@@ -24,7 +24,8 @@ class DepositController extends Controller
     }
 
     public function verify(){
-        $data = DB::table('topups')->where('topup_status', 'Open')->get();
+        $data = DB::table('v_deposit_players')->where('topup_status', 'Open')->get();
+        // return $data;
         return view('transactions.deposit.verify', ['data' => $data]);
     }
 

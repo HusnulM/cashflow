@@ -89,7 +89,7 @@
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="form-group">
-                                    <label for="afiliator">Afiliator</label>
+                                    <label for="afiliator">Referal</label>
                                     <input type="text" name="afiliator" class="form-control" value="{{ $data->afiliator }}" autocomplete="off" required>
                                 </div>
                             </div>

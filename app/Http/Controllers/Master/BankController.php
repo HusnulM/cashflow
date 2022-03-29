@@ -23,7 +23,9 @@ class BankController extends Controller
 
     public function edit($id){
         $data = DB::table('v_banks')->where('id', $id)->first();
-        return view('master.bank.edit', ['data' => $data]);
+        $banklist = DB::table('bank_lists')->get();
+        $currenctBank = DB::table('bank_lists')->where('bankid', $data->bankid)->first();
+        return view('master.bank.edit', ['data' => $data, 'banklist' => $banklist, 'currenctBank' => $currenctBank]);
     }
 
     public function save(Request $request){
@@ -35,7 +37,7 @@ class BankController extends Controller
                 'bankname'           => $request['namabank'],
                 'bank_accountnumber' => $request['norek'],
                 'bank_accountname'   => $request['atasnama'],
-                'bank_type'          => $request['tipebank'],
+                // 'bank_type'          => $request['tipebank'],
                 'opening_balance'    => $request['saldoawal'],
                 'createdby'          => Auth::user()->name,
                 'created_at'         => now()
@@ -78,7 +80,7 @@ class BankController extends Controller
                 'bankname'           => $request['namabank'],
                 'bank_accountnumber' => $request['norek'],
                 'bank_accountname'   => $request['atasnama'],
-                'bank_type'          => $request['tipebank'],
+                // 'bank_type'          => $request['tipebank'],
                 'opening_balance'    => $request['saldoawal'],
                 'updated_at'         => now()
             ]);

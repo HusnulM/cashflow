@@ -74,7 +74,7 @@
                                 <th>Nama Player</th>
                                 <th>Nama Bank</th>
                                 <th>Nomor Rekening</th>
-                                <th>Afiliator</th>
+                                <th>Referal</th>
                                 <th style="width:170px;"></th>
                             </thead>
                             <tbody>

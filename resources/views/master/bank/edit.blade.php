@@ -65,8 +65,13 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="kodebank">Kode Bank</label>
-                                <input type="text" name="kodebank" class="form-control" value="{{ $data->bankid }}" autocomplete="off" required>
                                 <input type="hidden" name="idbank" value="{{ $data->id }}">
+                                <select name="kodebank" id="kodebank" class="form-control">
+                                    <option value="{{ $currenctBank->bankid }}">{{ $currenctBank->bankid }} - {{ $currenctBank->deskripsi }}</option>
+                                    @foreach($banklist as $bank)
+                                    <option value="{{ $bank->bankid }}">{{ $bank->bankid }} - {{ $bank->deskripsi }}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -78,7 +83,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="saldoawal">Saldo Awal</label>
-                                <input type="text" name="saldoawal" class="form-control" autocomplete="off" required>
+                                <input type="text" name="saldoawal" class="form-control" value="{{ number_format($data->opening_balance,0,',','') }}" autocomplete="off" required>
                             </div>
                         </div>
                     </div>
@@ -95,7 +100,7 @@
                                 <input type="text" name="atasnama" class="form-control" value="{{ $data->bank_accountname }}" autocomplete="off" required>
                             </div>
                         </div>
-                        <div class="col-lg-4 col-md-6 col-sm-12">
+                        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="tipebank">Tipe</label>
                                 <select name="tipebank" id="tipebank" class="form-control">
@@ -104,7 +109,7 @@
                                     <option value="WD">WD</option>
                                 </select>
                             </div>
-                        </div>                        
+                        </div>                         -->
                     </div>
                 </div>
                 <div class="card-footer">

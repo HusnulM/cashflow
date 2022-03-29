@@ -120,7 +120,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="biaya_adm">Biaya Admin</label>
-                                <input type="text" name="biaya_adm" id="biaya_adm" class="form-control" value="0">
+                                <input type="text" name="biaya_adm" id="biaya_adm" class="form-control" value="0" readonly>
                             </div>
                         </div>
                     </div>
