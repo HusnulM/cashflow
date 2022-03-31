@@ -19,7 +19,7 @@
     </div>
 </div>   -->
 @endsection
-
+<?php $totalPengeluaran = 0; ?>
 @section('content')
 <div class="row">
     <div class="col-lg-12 mt-2">
@@ -78,10 +78,17 @@
                                     <td>{{ $d->tgl_pengeluaran }}</td>
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
                                     <td>{{ $d->keterangan }}</td>
-                                    <td>{{ $d->bank_account }}</td>
+                                    <td>{{ $d->bank_accountname }} {{ $d->bank_account }}</td>
                                 </tr>
+                                <?php $totalPengeluaran += $d->amount; ?>
                                 @endforeach
                             </tbody>
+                            <tfoot>
+                                <tr>
+                                    <td colspan="2">Total Pengeluaran</td>
+                                    <td style="text-align:right;font-weight:bold;">{{ number_format($totalPengeluaran,0) }}</td>
+                                </tr>
+                            </tfoot>
                         </table>
                     </div>
                 </div>

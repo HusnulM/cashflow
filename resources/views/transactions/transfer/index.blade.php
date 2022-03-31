@@ -61,7 +61,7 @@
                                 <select name="rekAsal" id="rekAsal" class="form-control">
                                     <option value="">Pilih Rekening Asal</option>
                                     @foreach($bank as $b)
-                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }} | Saldo : {{ number_format($b->saldo,0,'.',',') }}</option>
+                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bank_accountname }} - {{ $b->bank_accountnumber }} | Saldo : {{ number_format($b->saldo,0,'.',',') }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -74,7 +74,7 @@
                                 <select name="rekTujuan" id="rekTujuan" class="form-control">
                                     <option value="">Pilih Rekening Tujuan</option>
                                     @foreach($bank as $b)
-                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }} | Saldo : {{ number_format($b->saldo,0,'.',',') }}</option>
+                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bank_accountname }} - {{ $b->bank_accountnumber }} | Saldo : {{ number_format($b->saldo,0,'.',',') }}</option>
                                     @endforeach
                                 </select>
                             </div>

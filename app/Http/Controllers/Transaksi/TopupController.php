@@ -38,27 +38,47 @@ class TopupController extends Controller
 
             // Update Stock Coin
             $stockCoint = 0;
-            $totalcoin = DB::table('coin_stocks')->where('bankcode', $bankData->bankid)
-            ->where('bankacc', $request['rekening'])->first();
+            $totalcoin = DB::table('stock_coins')->where('id', '1')->first();
             if($totalcoin){
-                $stockCoint = $totalcoin->totalcoin + $request['jmlDepo'];
-                DB::table('coin_stocks')->where('id', $totalcoin->id)->update([
-                    'totalcoin' => $stockCoint,
-                    'updated_at'   => date('Y-m-d H:i:s')
+                $stockCoint = $totalcoin->quantity + $request['jmlDepo'];
+                DB::table('stock_coins')->where('id', '1')->update([
+                    'quantity' => $stockCoint,
+                    'updatedon'=> date('Y-m-d')
                 ]);
             }else{
                 $stockCoint = $request['jmlDepo'];
                 $coinData = array();
                 $insertCoin = array(
-                    'bankcode'     => $bankData->bankid,
-                    'bankacc'      => $request['rekening'],
-                    'totalcoin'    => $stockCoint,
-                    'createdby'    => Auth::user()->name,
-                    'created_at'   => date('Y-m-d H:i:s')
+                    'id'        => '1',
+                    'quantity'  => $stockCoint,
+                    'createdon' => date('Y-m-d'),
+                    'updatedon' => date('Y-m-d')
                 );
                 array_push($coinData, $insertCoin);
-                insertOrUpdate($coinData,'coin_stocks');
+                insertOrUpdate($coinData,'stock_coins');
             }
+
+            // $totalcoin = DB::table('coin_stocks')->where('bankcode', $bankData->bankid)
+            // ->where('bankacc', $request['rekening'])->first();
+            // if($totalcoin){
+            //     $stockCoint = $totalcoin->totalcoin + $request['jmlDepo'];
+            //     DB::table('coin_stocks')->where('id', $totalcoin->id)->update([
+            //         'totalcoin' => $stockCoint,
+            //         'updated_at'   => date('Y-m-d H:i:s')
+            //     ]);
+            // }else{
+            //     $stockCoint = $request['jmlDepo'];
+            //     $coinData = array();
+            //     $insertCoin = array(
+            //         'bankcode'     => $bankData->bankid,
+            //         'bankacc'      => $request['rekening'],
+            //         'totalcoin'    => $stockCoint,
+            //         'createdby'    => Auth::user()->name,
+            //         'created_at'   => date('Y-m-d H:i:s')
+            //     );
+            //     array_push($coinData, $insertCoin);
+            //     insertOrUpdate($coinData,'coin_stocks');
+            // }
 
             // Insert Mutasi Pengeluaran dari rekening pembayaran deposit
             $latestSaldo = 0;

@@ -37,7 +37,7 @@ class BankController extends Controller
                 'bankname'           => $request['namabank'],
                 'bank_accountnumber' => $request['norek'],
                 'bank_accountname'   => $request['atasnama'],
-                // 'bank_type'          => $request['tipebank'],
+                'bank_type'          => $request['tipebank'],
                 'opening_balance'    => $request['saldoawal'],
                 'createdby'          => Auth::user()->name,
                 'created_at'         => now()
@@ -80,7 +80,7 @@ class BankController extends Controller
                 'bankname'           => $request['namabank'],
                 'bank_accountnumber' => $request['norek'],
                 'bank_accountname'   => $request['atasnama'],
-                // 'bank_type'          => $request['tipebank'],
+                'bank_type'          => $request['tipebank'],
                 'opening_balance'    => $request['saldoawal'],
                 'updated_at'         => now()
             ]);

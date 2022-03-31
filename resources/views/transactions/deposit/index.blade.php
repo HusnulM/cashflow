@@ -114,9 +114,16 @@
                                 <label for="rekening">Rekening Tujuan Pembayaran</label>
                                 <select name="rekening" id="rekening" class="form-control" required>
                                     @foreach($bank as $b)
-                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }} | Stock : {{ number_format($b->totalcoin,0,'.',',') }}</option>
+                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }}</option>
                                     @endforeach
                                 </select>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="form-group">
+                                <label for="stock">Stock Coin Tersedia</label>
+                                <input type="text" name="stock" class="form-control" value="{{ $coin->quantity ?? '0' }}" readonly>
                             </div>
                         </div>
                     </div>

@@ -66,7 +66,7 @@
                         <table id="tbl-users" class="table table-bordered table-striped table-hover table-sm">
                             <thead>
                                 <th>No.</th>
-                                <th>Tanggal</th>
+                                <th style="width:100px;">Tanggal</th>
                                 <th>Keterangan</th>
                                 <th>No. Rekening</th>
                                 <th>Debit</th>
@@ -77,7 +77,7 @@
                                 @foreach($data as $key => $d)
                                 <tr>
                                     <td>{{$key+1}}</td>
-                                    <td>{{ $d->transdate }}</td>
+                                    <td>{{ date('d-m-Y',strtotime($d->transdate)) }}</td>
                                     <td>{{ $d->note }}</td>
                                     <td>{{ $d->to_acc }}</td>
                                     <td style="text-align:right;">{{ number_format($d->debit,0,'.',',') }}</td>

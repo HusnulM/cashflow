@@ -70,6 +70,7 @@
                                 <th>Nama Bank</th>
                                 <th>Nomor Rekening</th>
                                 <th>Atas Nama</th>
+                                <th>Tipe Bank</th>
                                 <th>Saldo Awal</th>
                                 <th>Saldo Akhir</th>
                                 <th style="width:170px;"></th>
@@ -82,6 +83,7 @@
                                     <td>{{ $d->bankname }}</td>
                                     <td>{{ $d->bank_accountnumber }}</td>
                                     <td>{{ $d->bank_accountname }}</td>
+                                    <td>{{ $d->bank_type }}</td>
                                     <td style="text-align:right;">{{ number_format($d->opening_balance,0,'.',',') }}</td>
                                     <td style="text-align:right;">{{ number_format($d->saldo,0,'.',',') }}</td>
                                     <td style="text-align:center;">

@@ -68,8 +68,8 @@
                                 <th>No.</th>
                                 <th>ID Player</th>
                                 <th>Nama Player</th>
-                                <th>Tanggal Topup</th>
-                                <th>Jumlah Topup</th>
+                                <th>Tanggal Withdraw</th>
+                                <th>Jumlah Withdraw</th>
                                 <th>Status WD</th>
                             </thead>
                             <tbody>

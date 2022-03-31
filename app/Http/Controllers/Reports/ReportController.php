@@ -11,22 +11,72 @@ use Auth;
 class ReportController extends Controller
 {
     public function reportTopup(){
-        $data = DB::table('deposits')->get();
+        return view('reports.topupsel');
+    }
+
+    public function reportTopupView($strdate, $enddate){
+        // $data = DB::table('deposits')->get();
+        $query = DB::table('v_topups');
+
+        if($strdate != 'null' && $enddate != 'null'){
+            $query->whereBetween('tgl_deposit', [$strdate, $enddate]);
+        }elseif($strdate != 'null' && $enddate == 'null'){
+            $query->where('tgl_deposit', $strdate);
+        }elseif($strdate == 'null' && $enddate != 'null'){
+            $query->where('tgl_deposit', $enddate);
+        }
+
+        if(Auth::user()->usertype <> 'Owner'){
+            $query->where('bank_type', '!=','Penampung');
+        }
+
+        $data = $query
+                ->orderBy('id','ASC')
+                ->get();
         return view('reports.topup', ['data' => $data]);
     }
 
     public function reportWithdraw(){
-        $data = DB::table('withdraws')->get();
+        if(Auth::user()->usertype == 'Owner'){
+            $data = DB::table('v_banks')->get();
+        }else{
+            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+        }
+        return view('reports.wdsel', ['bank' => $data]);
+    }
+
+    public function reportWithdrawView($strdate, $enddate){
+        $query = DB::table('v_withdraws');
+        if($strdate != 'null' && $enddate != 'null'){
+            $query->whereBetween('wdpdate', [$strdate, $enddate]);
+        }elseif($strdate != 'null' && $enddate == 'null'){
+            $query->where('wdpdate', $strdate);
+        }elseif($strdate == 'null' && $enddate != 'null'){
+            $query->where('wdpdate', $enddate);
+        }
+
+        if(Auth::user()->usertype <> 'Owner'){
+            $query->where('bank_type', '!=','Penampung');
+        }
+
+        $data = $query
+                ->orderBy('id','ASC')
+                ->get();
         return view('reports.wd', ['data' => $data]);
     }
 
     public function reportMutasi(){
-        $data = DB::table('v_banks')->get();
+        if(Auth::user()->usertype == 'Owner'){
+            $data = DB::table('v_banks')->get();
+        }else{
+            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+        }
+        
         return view('reports.mutasisel', ['bank' => $data]);
     }
 
     public function reportMutasiView($bankid, $strdate, $enddate){
-        $query = DB::table('cashflows');
+        $query = DB::table('v_cashflows');
         if($bankid != 'all'){
             $query->where('to_acc', $bankid);
         }
@@ -39,6 +89,10 @@ class ReportController extends Controller
             $query->where('transdate', $enddate);
         }
 
+        if(Auth::user()->usertype <> 'Owner'){
+            $query->where('bank_type', '!=','Penampung');
+        }
+
         $data = $query
                 ->orderBy('to_acc','ASC')
                 ->orderBy('id','ASC')
@@ -47,17 +101,99 @@ class ReportController extends Controller
     }
 
     public function reportPemasukan(){
-        $data = DB::table('incomes')->get();
+        if(Auth::user()->usertype == 'Owner'){
+            $data = DB::table('v_banks')->get();
+        }else{
+            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+        }
+        return view('reports.pemasukansel', ['bank' => $data]);
+    }
+
+    public function reportPemasukanView($strdate = null, $enddate = null){
+        // $data = DB::table('incomes')->get();
+        $query = DB::table('v_incomes');
+
+        if($strdate != 'null' && $enddate != 'null'){
+            $query->whereBetween('tgl_pemasukan', [$strdate, $enddate]);
+        }elseif($strdate != 'null' && $enddate == 'null'){
+            $query->where('tgl_pemasukan', $strdate);
+        }elseif($strdate == 'null' && $enddate != 'null'){
+            $query->where('tgl_pemasukan', $enddate);
+        }
+
+        if(Auth::user()->usertype <> 'Owner'){
+            $query->where('bank_type', '!=','Penampung');
+        }
+
+        $data = $query
+                ->orderBy('bank_account','ASC')
+                ->orderBy('id','ASC')
+                ->get();
+
         return view('reports.pemasukan', ['data' => $data]);
     }
 
     public function reportPengeluaran(){
-        $data = DB::table('expenses')->get();
+        if(Auth::user()->usertype == 'Owner'){
+            $data = DB::table('v_banks')->get();
+        }else{
+            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+        }
+        return view('reports.pengeluaransel', ['bank' => $data]);
+    }
+
+    public function reportPengeluaranView($strdate = null, $enddate = null){
+        $query = DB::table('v_expenses');
+
+        if($strdate != 'null' && $enddate != 'null'){
+            $query->whereBetween('tgl_pengeluaran', [$strdate, $enddate]);
+        }elseif($strdate != 'null' && $enddate == 'null'){
+            $query->where('tgl_pengeluaran', $strdate);
+        }elseif($strdate == 'null' && $enddate != 'null'){
+            $query->where('tgl_pengeluaran', $enddate);
+        }
+
+        if(Auth::user()->usertype <> 'Owner'){
+            $query->where('bank_type', '!=','Penampung');
+        }
+
+        $data = $query
+                ->orderBy('bank_account','ASC')
+                ->orderBy('id','ASC')
+                ->get();
         return view('reports.pengeluaran', ['data' => $data]);
     }
 
     public function reportDeposit(){
-        $data = DB::table('topups')->get();
+        if(Auth::user()->usertype == 'Owner'){
+            $data = DB::table('v_banks')->get();
+        }else{
+            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+        }
+        return view('reports.depositsel', ['bank' => $data]);
+    }
+
+    public function reportDepositView($strdate = null, $enddate = null){
+        $query = DB::table('v_deposit_players');
+        // if($bankid != 'all'){
+        //     $query->where('rekening_tujuan', $bankid);
+        // }
+
+        if($strdate != 'null' && $enddate != 'null'){
+            $query->whereBetween('topupdate', [$strdate, $enddate]);
+        }elseif($strdate != 'null' && $enddate == 'null'){
+            $query->where('topupdate', $strdate);
+        }elseif($strdate == 'null' && $enddate != 'null'){
+            $query->where('topupdate', $enddate);
+        }
+
+        if(Auth::user()->usertype <> 'Owner'){
+            $query->where('bank_type', '!=','Penampung');
+        }
+
+        $data = $query
+                ->orderBy('id','ASC')
+                ->get();
         return view('reports.deposit', ['data' => $data]);
     }
 

@@ -15,8 +15,15 @@ class DepositController extends Controller
 {
     public function index(){
         // $data = DB::table('players')->get();
-        $bank = DB::table('v_coin_stocks')->get();
-        return view('transactions.deposit.index', ['bank' => $bank]);
+        // if(Auth::user()->usertype <> 'Owner'){
+        //     $bank = DB::table('v_banks')->where('bank_type', '!=', 'Penampung')->get();
+        // }else{
+        //     $bank = DB::table('v_banks')->get();
+        // }
+        $bank = DB::table('v_banks')->where('bank_type','Depo')->get();
+        $coin = DB::table('stock_coins')->first();
+        // return $coin;
+        return view('transactions.deposit.index', ['bank' => $bank, 'coin' => $coin]);
     }
 
     public function upload(){
@@ -68,9 +75,9 @@ class DepositController extends Controller
             // }
             // insertOrUpdate($output,'topups');
 
-            $stock = DB::table('v_coin_stocks')->where('bank_accountnumber', $request->rekening)->first();
-            if($stock->totalcoin < ($request->jmltopup+$request->bonustopup)){
-                return Redirect::to("/transaksi/deposit")->withError('Stock Coin Rek '. $request->rekening . ' tidak mencukupi');
+            $stock = DB::table('stock_coins')->where('id', '1')->first();
+            if($stock->quantity < ($request->jmltopup+$request->bonustopup)){
+                return Redirect::to("/transaksi/deposit")->withError('Stock Coin tidak mencukupi');
             }else{
                 $topupData = array();
                 $insertData = array(
@@ -113,45 +120,61 @@ class DepositController extends Controller
     public function close($id){
         DB::beginTransaction();
         try{
-            DB::table('topups')->where('id', $id)->update([
-                'topup_status' => 'Close',
-                'updated_at'   => now()
-            ]);
-
             $topupdata = DB::table('topups')->where('id', $id)->first();
-
-            $latestSaldo = 0;
-            $saldo = DB::table('cashflows')->where('to_acc',$topupdata->rekening_tujuan)->limit(1)->orderBy('id','DESC')->first();
-            if($saldo){
-                $latestSaldo = $saldo->balance;
-            }
-
-            $castFlow = array();
-            $insertcastFlow = array(
-                'transdate'     => now(),
-                'note'          => 'Deposit player '. $topupdata->idplayer,
-                'from_acc'      => '',
-                'to_acc'        => $topupdata->rekening_tujuan,
-                'debit'         => 0,
-                'credit'        => $topupdata->amount,
-                'balance'       => $topupdata->amount+$latestSaldo,
-                'createdby'     => Auth::user()->name,
-                'created_at'    => now()
-            );
-            array_push($castFlow, $insertcastFlow);
-            insertOrUpdate($castFlow,'cashflows');
-
-            //Update Stock coin
-            $stockCoint = 0;
-            $bankData  = DB::table('banks')->where('bank_accountnumber', $topupdata->rekening_tujuan)->first();
-            $totalcoin = DB::table('coin_stocks')->where('bankcode', $bankData->bankid)->where('bankacc', $topupdata->rekening_tujuan)->first();
+            //Check Stock coin
+            $totalcoin = DB::table('stock_coins')->where('id', '1')->first();
             if($totalcoin){
-                $stockCoint = $totalcoin->totalcoin;
-                DB::table('coin_stocks')->where('id', $totalcoin->id)->update([
-                    'totalcoin' => $stockCoint - ( $topupdata->amount + $topupdata->topup_bonus ),
-                    'updated_at'   => date('Y-m-d H:i:s')
-                ]);
+                $stockCoint = $totalcoin->quantity - ( $topupdata->amount + $topupdata->topup_bonus );
+                if($stockCoint < ($topupdata->amount + $topupdata->topup_bonus)){
+                    DB::rollBack();
+                    return Redirect::to("/transaksi/deposit/verify")->withError('Stock Coin Tidak Mencukupi!');
+                }else{
+                    DB::table('stock_coins')->where('id', '1')->update([
+                        'quantity' => $stockCoint,
+                        'updatedon'=> date('Y-m-d')
+                    ]);
+
+                    DB::table('topups')->where('id', $id)->update([
+                        'topup_status' => 'Close',
+                        'updated_at'   => now()
+                    ]);
+        
+                    $latestSaldo = 0;
+                    $saldo = DB::table('cashflows')->where('to_acc',$topupdata->rekening_tujuan)->limit(1)->orderBy('id','DESC')->first();
+                    if($saldo){
+                        $latestSaldo = $saldo->balance;
+                    }
+        
+                    $castFlow = array();
+                    $insertcastFlow = array(
+                        'transdate'     => now(),
+                        'note'          => 'Deposit player '. $topupdata->idplayer,
+                        'from_acc'      => '',
+                        'to_acc'        => $topupdata->rekening_tujuan,
+                        'debit'         => 0,
+                        'credit'        => $topupdata->amount,
+                        'balance'       => $topupdata->amount+$latestSaldo,
+                        'createdby'     => Auth::user()->name,
+                        'created_at'    => now()
+                    );
+                    array_push($castFlow, $insertcastFlow);
+                    insertOrUpdate($castFlow,'cashflows');
+                }
+            }else{
+                DB::rollBack();
+                return Redirect::to("/transaksi/deposit/verify")->withError('Stock Coin Tidak Tersedia!');
             }
+
+            // $stockCoint = 0;
+            // $bankData  = DB::table('banks')->where('bank_accountnumber', $topupdata->rekening_tujuan)->first();
+            // $totalcoin = DB::table('coin_stocks')->where('bankcode', $bankData->bankid)->where('bankacc', $topupdata->rekening_tujuan)->first();
+            // if($totalcoin){
+            //     $stockCoint = $totalcoin->totalcoin;
+            //     DB::table('coin_stocks')->where('id', $totalcoin->id)->update([
+            //         'totalcoin' => $stockCoint - ( $topupdata->amount + $topupdata->topup_bonus ),
+            //         'updated_at'   => date('Y-m-d H:i:s')
+            //     ]);
+            // }
 
             DB::commit();            
             return Redirect::to("/transaksi/deposit/verify")->withSuccess('Deposit berhasil');

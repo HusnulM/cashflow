@@ -12,6 +12,7 @@ class HomeController extends Controller
 {
     public function index(){
         if(Auth::check()){
+            // dd(Auth::user());
             $coin = DB::table('coin_stocks')->first();
             return redirect()->intended('dashboard', ['coin' => $coin]);
         }
@@ -20,11 +21,12 @@ class HomeController extends Controller
     }
 
     public function dashboard(){
-        $coin       = DB::table('coin_stocks')->sum('totalcoin');
+        $month      = date('m');
+        $coin       = DB::table('stock_coins')->sum('quantity');
         // return $coin;
-        $totaldepo  = DB::table('deposits')->count();
-        $totaltopup = DB::table('topups')->count();
-        $totalwd    = DB::table('withdraws')->count();
+        $totaldepo  = DB::table('deposits')->whereMonth('tgl_deposit', '=', $month)->count();
+        $totaltopup = DB::table('topups')->whereMonth('topupdate', '=', $month)->count();
+        $totalwd    = DB::table('withdraws')->whereMonth('wdpdate', '=', $month)->count();
         // return $totaldepo;
         return view('dashboard', ['coin' => $coin, 'totaldepo' => $totaldepo, 'totaltopup' => $totaltopup, 'totalwd' => $totalwd]);
     }

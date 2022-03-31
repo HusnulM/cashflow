@@ -99,16 +99,17 @@
                                 <input type="text" name="atasnama" class="form-control" autocomplete="off" required>
                             </div>
                         </div>
-                        <!-- <div class="col-lg-4 col-md-6 col-sm-12">
+                        <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
-                                <label for="tipebank">Tipe</label>
-                                <select name="tipebank" id="tipebank" class="form-control">
+                                <label for="tipebank">Tipe Bank</label>
+                                <select name="tipebank" id="tipebank" class="form-control" required>
                                     <option value=""></option>
                                     <option value="Depo">Depo</option>
                                     <option value="WD">WD</option>
+                                    <option value="Penampung">Penampung</option>
                                 </select>
                             </div>
-                        </div>                         -->
+                        </div>                        
                     </div>
                 </div>
                 <div class="card-footer">

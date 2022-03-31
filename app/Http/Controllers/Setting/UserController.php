@@ -52,7 +52,8 @@ class UserController extends Controller
                 'name'        => $request['name'],
                 'email'       => $request['email'],
                 'username'    => $request['username'],
-                'password'    => $password
+                'password'    => $password,
+                'usertype'    => $request['usertype']
             ]);
 
             DB::commit();
@@ -94,9 +95,13 @@ class UserController extends Controller
                     'username'    => $request['username']
                 ]);
             }
-
+            if(isset($request['usertype'])){
+                DB::table('users')->where('id',$request['iduser'])->update([
+                    'usertype'    => $request['usertype']
+                ]);
+            }
             DB::commit();
-            return Redirect::to("/setting/users")->withSuccess('User berhasil ditambahkan');
+            return Redirect::to("/setting/users")->withSuccess('User berhasil diupdate');
         }catch(\Exception $e){
             DB::rollBack();
             return Redirect::to("/setting/users")->withError($e->getMessage());

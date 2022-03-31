@@ -1,6 +1,6 @@
 @extends('templates/main')
 
-@section('title', 'Laporan Pemasukan')
+@section('title', 'Laporan Pengeluaran')
 
 @section('header-content')
 <!-- <div class="content-header">
@@ -19,21 +19,18 @@
     </div>
 </div>   -->
 @endsection
-<?php $totalPemasukan = 0; ?>
+
 @section('content')
 <div class="row">
     <div class="col-lg-12 mt-2">
         <div class="card">
             <div class="card-header">
-                <h3 class="card-title">Laporan Pemasukan</h3>
+                <h3 class="card-title">Laporan Pengeluaran</h3>
                 <div class="card-tools">
                     <!-- <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
                         <i class="fas fa-minus"></i>
                     </button> -->
                     
-                    <!-- <a href="/master/bank/create" class="btn btn-primary btn-sm"> 
-                        <i class="fa fa-plus"></i> Tambah Bank
-                    </a> -->
                 </div>
             </div>
             <div class="card-body">
@@ -61,57 +58,63 @@
                     </div>
                 </div>
                     
+
                 <div class="row">
-                    <div class="table-responsive">
-                        <table id="tbl-users" class="table table-bordered table-striped table-hover table-sm">
-                            <thead>
-                                <th>No.</th>
-                                <th>Tanggal</th>
-                                <th>Jumlah Pemasukan</th>
-                                <th>Keterangan</th>
-                                <th>Rekening Tujuan</th>
-                            </thead>
-                            <tbody>
-                                @foreach($data as $key => $d)
-                                <tr>
-                                    <td>{{$key+1}}</td>
-                                    <td>{{ $d->tgl_pemasukan }}</td>
-                                    <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
-                                    <td>{{ $d->keterangan }}</td>
-                                    <td>{{ $d->bank_accountname }} {{ $d->bank_account }}</td>
-                                </tr>
-                                <?php $totalPemasukan += $d->amount; ?>
-                                @endforeach
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="2">Total Pemasukan</td>
-                                    <td style="text-align:right;font-weight:bold;">{{ number_format($totalPemasukan,0) }}</td>
-                                </tr>
-                            </tfoot>
-                        </table>
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="strdate">Dari Tanggal</label>
+                            <input type="date" name="strdate" id="strdate" class="form-control">
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <div class="form-group">
+                            <label for="enddate">Sampai Tanggal</label>
+                            <input type="date" name="enddate" id="enddate" class="form-control">
+                        </div>
                     </div>
                 </div>
+
             </div>
             <div class="card-footer">
-                
+                <div class="row">
+                    <div class="col-lg-12">
+                        <button type="button" class="btn btn-primary pull-right" id="btn-search">
+                            <i class="fa fa-search"></i> Tampilkan Data
+                        </button>
+                    </div>
+                </div>                
             </div>
         </div>
     </div>
-</div>    
+</div>
 @endsection
 
 @section('additional-js')
 <script>
+    $(document).keypress(
+        function(event){
+        if (event.which == '13') {
+            event.preventDefault();
+        }
+
+    });
+    
     $(function(){
-        $('#tbl-users').DataTable({
-            "paging": true,
-            "lengthChange": false,
-            "searching": false,
-            "ordering": true,
-            "info": true,
-            "autoWidth": false,
-            "responsive": true,
+        $('#btn-search').on('click', function(){
+            var _Bankid = $('#rekening').val();
+            var _Strdate = $('#strdate').val();
+            var _Enddate = $('#enddate').val();
+            if(_Strdate == ''){
+                _Strdate = 'null';
+                // alert('Tanggal tidak boleh kosong');
+            }
+            
+            if(_Enddate == ''){
+                _Enddate = 'null';
+            }
+            window.location.href = base_url+'/laporan/pengeluaranview/'+_Strdate+'/'+_Enddate
+            // alert(_Bankid + ' - ' + _Strdate + ' - ' + _Enddate);
         });
     })
 </script>

@@ -11,7 +11,7 @@ use Auth;
 class PengeluaranController extends Controller
 {
     public function index(){
-        $bank = DB::table('banks')->get();
+        $bank = DB::table('v_banks')->get();
         return view('transactions.pengeluaran.index', ['bank' => $bank]);
     }
 
