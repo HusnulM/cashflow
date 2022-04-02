@@ -98,7 +98,7 @@
                         <div class="col-lg-6">
                             <div class="form-group">
                                 <label for="tgltopup">Tanggal Deposit</label>
-                                <input type="date" name="tgltopup" class="form-control">
+                                <input type="date" name="tgltopup" class="form-control" value="<?= date('Y-m-d'); ?>">
                             </div>
                         </div>
                         <div class="col-lg-6">

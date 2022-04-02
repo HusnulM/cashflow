@@ -68,8 +68,11 @@
                                 <th>No.</th>
                                 <th>ID Player</th>
                                 <th>Nama Player</th>
-                                <th>Tanggal Deposit</th>
                                 <th>Jumlah Deposit</th>
+                                <th>Bonus Deposit</th>
+                                <th>Tanggal Deposit</th>
+                                <th>dibayar Dari</th>
+                                <th>dibayar Ke</th>
                                 <th>Status Deposit</th>
                             </thead>
                             <tbody>
@@ -78,8 +81,14 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{ $d->idplayer }}</td>
                                     <td>{{ $d->playername }}</td>
-                                    <td>{{ $d->topupdate }}</td>
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->topup_bonus,0,'.',',') }}</td>
+                                    <td>{{ $d->topupdate }}</td>
+                                    <td>{{ $d->bankname }} {{ $d->bankacc }}</td>
+                                    <td>{{ $d->banknameto }} {{ $d->rekening_tujuan }}</td>
+                                    <!-- <td>
+                                        <a href="/efiles/topupfiles/{{ $d->efile }}" target="_blank">{{ $d->efile }}</a>
+                                    </td> -->
                                     <td>{{ $d->topup_status }}</td>
                                 </tr>
                                 @endforeach

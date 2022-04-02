@@ -68,6 +68,7 @@
                                 <th>No.</th>
                                 <th>Tanggal</th>
                                 <th>Jumlah Top Up</th>
+                                <th>Dibayar Dari</th>
                                 <th>Keterangan</th>
                             </thead>
                             <tbody>
@@ -76,6 +77,7 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{ $d->tgl_deposit }}</td>
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
+                                    <td>{{ $d->bank_accountname }} {{ $d->bankacc }}</td>
                                     <td>{{ $d->keterangan }}</td>
                                 </tr>
                                 @endforeach
