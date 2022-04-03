@@ -146,7 +146,7 @@
     });
 
     $('#find-player').select2({
-        placeholder: 'Type Player Name',
+        placeholder: 'Type Player ID',
         minimumInputLength: 0,
         ajax: {
             url: base_url + '/master/player/searchbyname',
@@ -155,8 +155,8 @@
                 return {
                     results: $.map(data.data, function (item) {
                         return {
-                            text: item.playername,
-                            slug: item.playerid,
+                            text: item.playerid,
+                            slug: item.playername,
                             id: item.playerid,
                             ...item
                         }
@@ -170,7 +170,7 @@
         var data = e.params.data;
         console.log(data);
         $('input[name=idplayer]').val(data.id);
-        $('input[name=namaplayer]').val(data.text);
+        $('input[name=namaplayer]').val(data.slug);
         $('input[name=namabank]').val(data.bankid + ' | ' + data.bankname);
         $('input[name=nomor_rek]').val(data.bankacc);
         $('input[name=bankid]').val(data.bankid);

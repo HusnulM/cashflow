@@ -40,7 +40,7 @@ class PlayerController extends Controller
         $data = DB::table('players')
         // ->select('playerid','name1')
         ->distinct()
-        ->where('playername', 'LIKE', '%'. $request->query('term') . '%')
+        ->where('playerid', 'LIKE', '%'. $request->query('term') . '%')
         ->get();
 
         $output = array(
