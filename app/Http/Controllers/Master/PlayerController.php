@@ -12,14 +12,16 @@ use Validator,Redirect,Response;
 use DB;
 use Excel;
 use Auth;
+use DataTables;
 
 class PlayerController extends Controller
 {
     // use JsonResponser;
 
     public function index(){
-        $data = DB::table('v_players')->get();
-        return view('master.player.index', ['data' => $data]);
+        // $data = DB::table('v_players')->get();
+        // return view('master.player.index', ['data' => $data]);
+        return view('master.player.playerlist');
     }
 
     public function create(){
@@ -130,5 +132,19 @@ class PlayerController extends Controller
         } else {
             return Redirect::to("/master/player")->withError('Error');
         }
+    }
+
+    public function playerlist(Request $request){
+        //to use parameter or variable sent from ajax view
+        $params = $request->params;
+        
+        $whereClause = $params['sac'];
+
+
+
+        $query = DB::table('v_players')->orderBy('playerid');
+        
+
+        return DataTables::queryBuilder($query)->toJson();
     }
 }

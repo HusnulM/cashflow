@@ -123,6 +123,8 @@ Route::group(['middleware' => 'auth'], function () {
             Route::post('/upload/save','Master\PlayerController@importPlayer')->middleware('checkAuth:master/player');
             Route::get('/searchbyname','Master\PlayerController@searchByname');//->middleware('checkAuth:master/player');
             // master/player/searchbyname
+
+            Route::get('/playerlist',   'Master\PlayerController@playerlist')->middleware('checkAuth:master/player');
         });
 
         Route::group(['prefix' => '/transaksi/deposit'], function () {

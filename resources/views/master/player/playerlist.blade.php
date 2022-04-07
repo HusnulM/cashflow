@@ -3,11 +3,6 @@
 @section('title', 'Data Master Player')
 
 @section('additional-css')
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script> 
-
-<script type="text/javascript" src="https://cdn.datatables.net/1.10.20/js/jquery.dataTables.min.js"></script>
-
-<link rel="stylesheet" href="https://cdn.datatables.net/1.10.20/css/jquery.dataTables.min.css">
 @endsection
 
 @section('header-content')
@@ -86,36 +81,7 @@
                                 <th style="width:170px;"></th>
                             </thead>
                             <tbody>
-                                @foreach($data as $key => $d)
-                                <tr>
-                                    <td>{{$key+1}}</td>
-                                    @if($d->totalafiliator <= 10)
-                                    <td style="background-color:red; color:white;">
-                                        {{ $d->playerid }}
-                                    </td>
-                                    @elseif($d->totalafiliator > 10 && $d->totalafiliator <= 49)
-                                    <td style="background-color:green; color:white;">
-                                        {{ $d->playerid }}
-                                    </td>
-                                    @elseif($d->totalafiliator >= 50)
-                                    <td style="background-color:blue; color:white;">
-                                        {{ $d->playerid }}
-                                    </td>
-                                    @endif
-                                    <td>{{ $d->playername }}</td>
-                                    <td>{{ $d->bankname }}</td>
-                                    <td>{{ $d->bankacc }}</td>
-                                    <td>{{ $d->afiliator }}</td>
-                                    <td style="text-align:center;">
-                                        <a href="/master/player/delete/{{$d->playerid}}" class="btn btn-danger btn-sm">
-                                            <i class="fa fa-trash"></i> HAPUS
-                                        </a> 
-                                        <a href="/master/player/edit/{{$d->playerid}}" class="btn btn-success btn-sm">
-                                            <i class="fa fa-edit"></i> EDIT
-                                        </a>                                         
-                                    </td>
-                                </tr>
-                                @endforeach
+                                
                             </tbody>
                         </table>
                     </div>
@@ -131,22 +97,9 @@
 
 @section('additional-js')
 <script>
-    // $(function(){
-    //     $('#tbl-users').DataTable({
-    //         "paging": true,
-    //         "lengthChange": false,
-    //         "searching": false,
-    //         "ordering": true,
-    //         "info": true,
-    //         "autoWidth": false,
-    //         "responsive": true,
-    //     });
-    // })
-
-    $(document).ready(function() {
- 
-        $("#tbl-users").DataTable({
-                serverSide: true,
+    $(function(){
+        $('#tbl-users').DataTable({
+            serverSide: true,
                 ajax: {
                     url: base_url+'/master/player/playerlist',
                     data: function (data) {
@@ -154,21 +107,76 @@
                             sac: "sac"
                         }
                     }
+            },
+            "paging": true,
+            "lengthChange": false,
+            "searching": false,
+            "ordering": true,
+            "info": true,
+            "autoWidth": false,
+            "responsive": true,
+            columns: [
+                { "data": null,"sortable": false, 
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
+                    }  
                 },
-                buttons: false,
-                searching: true,
-                scrollY: 500,
-                scrollX: true,
-                scrollCollapse: true,
-                columns: [
-                    {data: "user_id", className: 'uid'},
-                    {data: "first_name", className: 'fname'},
-                    {data: "username", className: 'uname'},
-                    {data: "gender", className: 'gender'}
-                
-                ]  
+                {data: "playerid"},
+                {data: "playername"},
+                {data: "bankname"},
+                {data: "bankacc"},
+                {data: "afiliator"},
+                {"defaultContent": 
+                    "<button class='btn btn-danger btn-sm button-delete'> <i class='fa fa-trash'></i> HAPUS</button> <button class='btn btn-primary btn-sm button-edit'> <i class='fa fa-edit'></i> EDIT</button>"
+                }
+            ]  
         });
 
+        $('#tbl-users tbody').on( 'click', '.button-delete', function () {
+            
+            var table = $('#tbl-users').DataTable();
+            selected_data = [];
+            selected_data = table.row($(this).closest('tr')).data();
+            // alert(selected_data.playerid);
+            window.location = base_url+"/master/player/delete/"+selected_data.playerid;
         });
+
+        $('#tbl-users tbody').on( 'click', '.button-edit', function () {
+            // alert('edit')
+            var table = $('#tbl-users').DataTable();
+            selected_data = [];
+            selected_data = table.row($(this).closest('tr')).data();
+            window.location = base_url+"/master/player/edit/"+selected_data.playerid;
+            // alert(selected_data.playerid);
+        });
+    })
+
+    // $(document).ready(function() {
+ 
+    //     $("#tbl-users").DataTable({
+    //             serverSide: true,
+    //             ajax: {
+    //                 url: base_url+'/master/player/playerlist',
+    //                 data: function (data) {
+    //                     data.params = {
+    //                         sac: "sac"
+    //                     }
+    //                 }
+    //             },
+    //             buttons: false,
+    //             searching: true,
+    //             scrollY: 500,
+    //             scrollX: true,
+    //             scrollCollapse: true,
+    //             columns: [
+    //                 {data: "playerid"},
+    //                 {data: "playername"},
+    //                 {data: "bankname"},
+    //                 {data: "bankacc"},
+    //                 {data: "afiliator"}
+    //             ]  
+    //     });
+
+    // });
 </script>
 @endsection
