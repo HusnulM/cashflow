@@ -25,7 +25,8 @@ class PlayerController extends Controller
     }
 
     public function create(){
-        return view('master.player.create');
+        $bank = DB::table('bank_lists')->get();
+        return view('master.player.create', ['banklist' => $bank]);
     }
 
     public function upload(){
@@ -34,7 +35,9 @@ class PlayerController extends Controller
 
     public function edit($id){
         $data = DB::table('players')->where('playerid', $id)->first();
-        return view('master.player.edit', ['data' => $data]);
+        $bank = DB::table('bank_lists')->get();
+        $oldbank = DB::table('bank_lists')->where('bankid', $data->bankid)->first();
+        return view('master.player.edit', ['data' => $data, 'banklist' => $bank, 'oldbank' => $oldbank]);
     }
 
     public function searchByname(Request $request){
@@ -64,6 +67,7 @@ class PlayerController extends Controller
             $menuroledata = array(
                 'playerid'   => $request['idplayer'],
                 'playername' => $request['namaplayer'],
+                'bankid'     => $request['kodebank'],
                 'bankname'   => $request['namabank'],
                 'bankacc'    => $request['norek'],
                 'afiliator'  => $request['afiliator']
@@ -83,6 +87,7 @@ class PlayerController extends Controller
         try{
             DB::table('players')->where('playerid', $request['idplayer'])->update([
                 'playername' => $request['namaplayer'],
+                'bankid'     => $request['kodebank'],
                 'bankname'   => $request['namabank'],
                 'bankacc'    => $request['norek'],
                 'afiliator'  => $request['afiliator']

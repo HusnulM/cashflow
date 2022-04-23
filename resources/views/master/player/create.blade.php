@@ -77,6 +77,17 @@
                             </div>
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="form-group">
+                                    <label for="kodebank">Kode Bank</label>
+                                    <select name="kodebank" id="kodebank" class="form-control">
+                                        <option value="">Pilih Kode Bank</option>
+                                        @foreach($banklist as $bank)
+                                        <option value="{{ $bank->bankid }}">{{ $bank->bankid }} - {{ $bank->deskripsi }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-12 col-md-12 col-sm-12">
+                                <div class="form-group">
                                     <label for="namabank">Nama BANK</label>
                                     <input type="text" name="namabank" class="form-control" autocomplete="off" required>
                                 </div>
