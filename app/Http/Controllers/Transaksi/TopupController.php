@@ -81,26 +81,26 @@ class TopupController extends Controller
             // }
 
             // Insert Mutasi Pengeluaran dari rekening pembayaran deposit
-            $latestSaldo = 0;
-            $saldoRekAsal = DB::table('cashflows')->where('to_acc',$request['rekening'])->limit(1)->orderBy('id','DESC')->first();
-            if($saldoRekAsal){
-                $latestSaldo = $saldoRekAsal->balance;
-            }
+            // $latestSaldo = 0;
+            // $saldoRekAsal = DB::table('cashflows')->where('to_acc',$request['rekening'])->limit(1)->orderBy('id','DESC')->first();
+            // if($saldoRekAsal){
+            //     $latestSaldo = $saldoRekAsal->balance;
+            // }
 
-            $castFlow = array();
-            $insertcastFlow = array(
-                'transdate'     => now(),
-                'note'          => 'Top Up Coin '. $bankData->bankname . ' '. $bankData->bank_accountname . ' - ' . $bankData->bank_accountnumber,
-                'from_acc'      => '',
-                'to_acc'        => $request['rekening'],
-                'debit'         => $request['jmlDepo'],
-                'credit'        => 0,
-                'balance'       => $latestSaldo - $request['jmlDepo'],
-                'createdby'     => Auth::user()->name,
-                'created_at'    => now()
-            );
-            array_push($castFlow, $insertcastFlow);
-            insertOrUpdate($castFlow,'cashflows');
+            // $castFlow = array();
+            // $insertcastFlow = array(
+            //     'transdate'     => now(),
+            //     'note'          => 'Top Up Coin '. $bankData->bankname . ' '. $bankData->bank_accountname . ' - ' . $bankData->bank_accountnumber,
+            //     'from_acc'      => '',
+            //     'to_acc'        => $request['rekening'],
+            //     'debit'         => $request['jmlDepo'],
+            //     'credit'        => 0,
+            //     'balance'       => $latestSaldo - $request['jmlDepo'],
+            //     'createdby'     => Auth::user()->name,
+            //     'created_at'    => now()
+            // );
+            // array_push($castFlow, $insertcastFlow);
+            // insertOrUpdate($castFlow,'cashflows');
 
             DB::commit();
             

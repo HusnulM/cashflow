@@ -16,7 +16,7 @@ class ReportController extends Controller
 
     public function reportTopupView($strdate, $enddate){
         // $data = DB::table('deposits')->get();
-        $query = DB::table('v_topups');
+        $query = DB::table('deposits');
 
         if($strdate != 'null' && $enddate != 'null'){
             $query->whereBetween('tgl_deposit', [$strdate, $enddate]);
@@ -26,9 +26,9 @@ class ReportController extends Controller
             $query->where('tgl_deposit', $enddate);
         }
 
-        if(Auth::user()->usertype <> 'Owner'){
-            $query->where('bank_type', '!=','Penampung');
-        }
+        // if(Auth::user()->usertype <> 'Owner'){
+        //     $query->where('bank_type', '!=','Penampung');
+        // }
 
         $data = $query
                 ->orderBy('id','ASC')
