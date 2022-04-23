@@ -1,6 +1,6 @@
 @extends('templates/main')
 
-@section('title', 'Tambah Player')
+@section('title', 'Edit Player')
 
 @section('header-content')
 <!-- <div class="content-header">
@@ -27,7 +27,7 @@
         <div class="col-lg-12 mt-2">
             <div class="card">
                 <div class="card-header">
-                    <h3 class="card-title">Tambah Player</h3>
+                    <h3 class="card-title">Edit Player</h3>
                     <div class="card-tools">                        
                         <a href="/master/player" class="btn btn-danger btn-sm"> 
                             <i class="fa fa-arrow-alt-circle-left"></i> Kembali
