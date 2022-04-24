@@ -30,31 +30,7 @@ class WithdrawController extends Controller
     public function save(Request $request){
         DB::beginTransaction();
         try{
-            // $destinationPath = 'efiles/topupfiles';
-            // if(!File::exists($destinationPath)) {
-            //     File::makeDirectory($destinationPath, 0755, true, true);
-            // }
-
-            // $output = array();
-            // $playerid = $request['itm_idplayer'];
-            // $nmayerid = $request['itm_nmplayer'];
-            // $jmltopup = $request['itm_jmltopup'];
-            // $tgltopup = $request['itm_tgltopup'];
-            // $rekening = $request['itm_rekening'];
             
-            // for($i = 0; $i < sizeof($playerid); $i++){
-            //     $insertData = array(
-            //         'idplayer'     => $playerid[$i],
-            //         'playername'   => $nmayerid[$i],
-            //         'amount'       => $jmltopup[$i],
-            //         'wdpdate'      => $tgltopup[$i],
-            //         'wd_status'    => 'Open',
-            //         'rekening_sumber' => $rekening[$i],
-            //         'createdby'    => Auth::user()->name,
-            //         'created_at'   => now()
-            //     );
-            //     array_push($output, $insertData);
-            // }
             $latestSaldo = 0;
             $saldo = DB::table('cashflows')->where('to_acc',$request['rekening'])->limit(1)->orderBy('id','DESC')->first();
             if($saldo){
@@ -73,7 +49,7 @@ class WithdrawController extends Controller
                 'amount'       => $request['jmlwd'],
                 'biaya_adm'    => $request['biaya_adm'],
                 'wdpdate'      => $request['tglwd'],
-                'wd_status'    => 'Open',
+                'wd_status'    => 'Close',
                 'rekening_sumber' => $request['rekening'],
                 'createdby'    => Auth::user()->name,
                 'created_at'   => now()
@@ -81,6 +57,58 @@ class WithdrawController extends Controller
             array_push($output, $insertData);
 
             insertOrUpdate($output,'withdraws');
+
+
+            $castFlow = array();
+            $insertcastFlow = array(
+                'transdate'     => now(),
+                'note'          => 'WD player '. $request['idplayer'],
+                'from_acc'      => '',
+                'to_acc'        => $request['rekening'],
+                'debit'         => $request['jmlwd'],
+                'credit'        => 0,
+                'balance'       => $latestSaldo-$request['jmlwd'],
+                'createdby'     => Auth::user()->name,
+                'created_at'    => now()
+            );
+            array_push($castFlow, $insertcastFlow);
+            insertOrUpdate($castFlow,'cashflows');
+
+            if($request['biaya_adm'] > 0){
+                $castFlow = array();
+                $insertcastFlow = array(
+                    'transdate'     => now(),
+                    'note'          => 'Biaya Admin WD player '. $request['idplayer'],
+                    'from_acc'      => '',
+                    'to_acc'        => $request['rekening'],
+                    'debit'         => $request['biaya_adm'],
+                    'credit'        => 0,
+                    'balance'       => $latestSaldo-$request['jmlwd']-$request['biaya_adm'],
+                    'createdby'     => Auth::user()->name,
+                    'created_at'    => now()
+                );
+                array_push($castFlow, $insertcastFlow);
+                insertOrUpdate($castFlow,'cashflows');
+            }
+
+            //Update Stock coin
+            $stock = DB::table('stock_coins')->where('id', '1')->first();
+            $stockCoint = $stock->quantity + $request['jmlwd'] ?? 0;
+            DB::table('stock_coins')->where('id', '1')->update([
+                'quantity' => $stockCoint,
+                'updatedon'=> date('Y-m-d')
+            ]);
+            // $stockCoint = 0;
+            // $bankData = DB::table('banks')->where('bank_accountnumber', $wdData->rekening_sumber)->first();
+            // $totalcoin = DB::table('coin_stocks')->where('bankcode', $bankData->bankid)->where('bankacc', $wdData->rekening_sumber)->first();
+            // if($totalcoin){
+            //     $stockCoint = $totalcoin->totalcoin;
+            //     DB::table('coin_stocks')->where('id', $totalcoin->id)->update([
+            //         'totalcoin' => $stockCoint + $wdData->amount,
+            //         'updated_at'   => date('Y-m-d H:i:s')
+            //     ]);
+            // }
+
             DB::commit();
 
             
@@ -184,11 +212,11 @@ class WithdrawController extends Controller
 
         //remove from server
 		unlink('excel/'.$file->getClientOriginalName());
-
-        if($import) {
-            return Redirect::to("/transaksi/withdraw")->withSuccess('Data Withdraw Berhasil di Upload');
-        } else {
-            return Redirect::to("/transaksi/withdraw")->withError('Error');
-        }
+        return Redirect::to("/transaksi/withdraw");
+        // if($import) {
+        //     return Redirect::to("/transaksi/withdraw")->withSuccess('Data Withdraw Berhasil di Upload');
+        // } else {
+        //     return Redirect::to("/transaksi/withdraw")->withError('Error');
+        // }
     }
 }

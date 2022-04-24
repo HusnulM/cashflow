@@ -40,45 +40,13 @@ class DepositController extends Controller
         // return $request;
         DB::beginTransaction();
         try{
-            // $destinationPath = 'efiles/topupfiles';
-            // if(!File::exists($destinationPath)) {
-            //     File::makeDirectory($destinationPath, 0755, true, true);
-            // }
-
-            // $output = array();
-            // $playerid = $request['itm_idplayer'];
-            // $nmayerid = $request['itm_nmplayer'];
-            // $jmltopup = $request['itm_jmltopup'];
-            // $tgltopup = $request['itm_tgltopup'];
-            // $bontopup = $request['itm_jmlbonus'];
-            // // $xfile    = $request->file('itm_efile');
-            
-            // for($i = 0; $i < sizeof($playerid); $i++){
-            //     // $file = $xfile[$i];
-                
-            //     $insertData = array(
-            //         'idplayer'     => $playerid[$i],
-            //         'playername'   => $nmayerid[$i],
-            //         'amount'       => $jmltopup[$i],
-            //         'topup_bonus'  => $bontopup[$i],
-            //         'topupdate'    => $tgltopup[$i],
-            //         'topup_status' => 'Open',
-            //         // 'efile'        => $file->getClientOriginalName(),
-            //         'createdby'    => Auth::user()->name,
-            //         'created_at'   => now()
-            //     );
-            //     array_push($output, $insertData);
-
-            //     // if(!empty($file)){
-            //     //     $file->move($destinationPath,$file->getClientOriginalName());
-            //     // }
-            // }
-            // insertOrUpdate($output,'topups');
-
+            $stockCoint = 0;
             $stock = DB::table('stock_coins')->where('id', '1')->first();
             if($stock->quantity < ($request->jmltopup+$request->bonustopup)){
                 return Redirect::to("/transaksi/deposit")->withError('Stock Coin tidak mencukupi');
             }else{
+                $stockCoint = $stock->quantity - ( $request->jmltopup + $request->bonustopup ?? 0 );
+
                 $topupData = array();
                 $insertData = array(
                     'idplayer'     => $request->idplayer,
@@ -86,7 +54,7 @@ class DepositController extends Controller
                     'amount'       => $request->jmltopup,
                     'topup_bonus'  => $request->bonustopup ?? 0,
                     'topupdate'    => $request->tgltopup,
-                    'topup_status' => 'Open',
+                    'topup_status' => 'Close',
                     'rekening_tujuan' => $request->rekening,
                     'createdby'    => Auth::user()->name,
                     'created_at'   => now()
@@ -94,20 +62,39 @@ class DepositController extends Controller
                 array_push($topupData, $insertData);
                 insertOrUpdate($topupData,'topups');
 
+                DB::table('stock_coins')->where('id', '1')->update([
+                    'quantity' => $stockCoint,
+                    'updatedon'=> date('Y-m-d')
+                ]);
+
+                $latestSaldo = 0;
+                $saldo = DB::table('cashflows')->where('to_acc',$request->rekening)->limit(1)->orderBy('id','DESC')->first();
+                if($saldo){
+                    $latestSaldo = $saldo->balance;
+                }
+    
+                $castFlow = array();
+                $insertcastFlow = array(
+                    'transdate'     => now(),
+                    'note'          => 'Deposit player '. $request->idplayer,
+                    'from_acc'      => '',
+                    'to_acc'        => $request->rekening,
+                    'debit'         => 0,
+                    'credit'        => $request->jmltopup,
+                    'balance'       => $request->jmltopup+$latestSaldo,
+                    'createdby'     => Auth::user()->name,
+                    'created_at'    => now()
+                );
+                array_push($castFlow, $insertcastFlow);
+                insertOrUpdate($castFlow,'cashflows');
+                
+
                 DB::commit();
+
+                // $openDepo = DB::table('topups')->where('topup_status', 'Open')->get();
 
                 return Redirect::to("/transaksi/deposit")->withSuccess('Deposit Berhasil di input');
             }
-
-            // $playerdata = array();
-            // $insertPlayer = array(
-            //     'playerid'   => $request['idplayer'],
-            //     'playername' => $request['namaplayer'],
-            //     'bankname'   => $request['namabank'],
-            //     'bankacc'    => $request['nomor_rek']
-            // );
-            // array_push($playerdata, $insertPlayer);
-            // insertOrUpdate($playerdata,'players');
 
             
         }catch(\Exception $e){
@@ -203,11 +190,11 @@ class DepositController extends Controller
 
         //remove from server
 		unlink('excel/'.$file->getClientOriginalName());
-
-        if($import) {
-            return Redirect::to("/transaksi/deposit")->withSuccess('Data Deposit Berhasil di Upload');
-        } else {
-            return Redirect::to("/transaksi/deposit")->withError('Error');
-        }
+        return Redirect::to("/transaksi/deposit");
+        // if($import) {
+        //     return Redirect::to("/transaksi/deposit")->withSuccess('Data Deposit Berhasil di Upload');
+        // } else {
+        //     return Redirect::to("/transaksi/deposit")->withError('Error');
+        // }
     }
 }

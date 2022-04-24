@@ -31,13 +31,14 @@
                                     <button type="button" class="close closeAlert" data-dismiss="alert"></button> 
                                     <strong>{{ $message }}</strong>
                                 </div>
-                                @endforeach            
-                            @endif
-                            @if ($message = Session::get('success'))
-                            <div class="alert alert-success alert-block msgAlert">
-                                <button type="button" class="close" data-dismiss="alert">×</button> 
-                                <strong>{{ $message }}</strong>
-                            </div>
+                                @endforeach      
+                            @else      
+                                @if ($message = Session::get('success'))
+                                <div class="alert alert-success alert-block msgAlert">
+                                    <button type="button" class="close" data-dismiss="alert">×</button> 
+                                    <strong>{{ $message }}</strong>
+                                </div>
+                                @endif
                             @endif
                             @if(session()->has('error'))
                                 <div class="alert alert-danger msgAlert">
