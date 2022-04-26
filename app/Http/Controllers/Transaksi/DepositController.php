@@ -20,7 +20,7 @@ class DepositController extends Controller
         // }else{
         //     $bank = DB::table('v_banks')->get();
         // }
-        $bank = DB::table('v_banks')->where('bank_type','Depo')->get();
+        $bank = DB::table('v_banks')->where('bank_depo','Y')->get();
         $coin = DB::table('stock_coins')->first();
         // return $coin;
         return view('transactions.deposit.index', ['bank' => $bank, 'coin' => $coin]);

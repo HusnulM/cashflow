@@ -14,7 +14,7 @@ use Excel;
 class WithdrawController extends Controller
 {
     public function index(){
-        $bank = DB::table('v_banks')->where('bank_type','WD')->get();
+        $bank = DB::table('v_banks')->where('bank_wd','Y')->get();
         return view('transactions.withdraw.withdraw', ['bank' => $bank]);
     }
 

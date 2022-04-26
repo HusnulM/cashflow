@@ -69,7 +69,10 @@
                                 <th>ID Player</th>
                                 <th>Nama Player</th>
                                 <th>Tanggal Withdraw</th>
+                                <th>WD Dari Rekening</th>
+                                <th>WD Ke Rekening</th>
                                 <th>Jumlah Withdraw</th>
+                                <th>Biaya Admin</th>
                                 <th>Status WD</th>
                             </thead>
                             <tbody>
@@ -79,7 +82,10 @@
                                     <td>{{ $d->idplayer }}</td>
                                     <td>{{ $d->playername }}</td>
                                     <td>{{ $d->wdpdate }}</td>
+                                    <td>{{ $d->bank_sumberid }} {{ $d->rekening_sumber }}</td>
+                                    <td>{{ $d->bankid }} {{ $d->bankacc }}</td>
                                     <td style="text-align:right;">{{ number_format($d->amount,0,'.',',') }}</td>
+                                    <td style="text-align:right;">{{ number_format($d->biaya_adm,0,'.',',') }}</td>
                                     <td>{{ $d->wd_status }}</td>
                                 </tr>
                                 @endforeach

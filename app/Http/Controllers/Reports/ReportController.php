@@ -40,7 +40,7 @@ class ReportController extends Controller
         if(Auth::user()->usertype == 'Owner'){
             $data = DB::table('v_banks')->get();
         }else{
-            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+            $data = DB::table('v_banks')->where('bank_penampung','!=','Y')->get();
         }
         return view('reports.wdsel', ['bank' => $data]);
     }
@@ -56,7 +56,7 @@ class ReportController extends Controller
         }
 
         if(Auth::user()->usertype <> 'Owner'){
-            $query->where('bank_type', '!=','Penampung');
+            $query->where('bank_penampung', '!=','Y');
         }
 
         $data = $query
@@ -69,7 +69,7 @@ class ReportController extends Controller
         if(Auth::user()->usertype == 'Owner'){
             $data = DB::table('v_banks')->get();
         }else{
-            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+            $data = DB::table('v_banks')->where('bank_penampung','N')->get();
         }
         
         return view('reports.mutasisel', ['bank' => $data]);
@@ -90,7 +90,7 @@ class ReportController extends Controller
         }
 
         if(Auth::user()->usertype <> 'Owner'){
-            $query->where('bank_type', '!=','Penampung');
+            $query->where('bank_penampung','N');
         }
 
         $data = $query
@@ -104,7 +104,7 @@ class ReportController extends Controller
         if(Auth::user()->usertype == 'Owner'){
             $data = DB::table('v_banks')->get();
         }else{
-            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+            $data = DB::table('v_banks')->where('bank_penampung','!=','Y')->get();
         }
         return view('reports.pemasukansel', ['bank' => $data]);
     }
@@ -122,7 +122,7 @@ class ReportController extends Controller
         }
 
         if(Auth::user()->usertype <> 'Owner'){
-            $query->where('bank_type', '!=','Penampung');
+            $query->where('bank_penampung', '!=','Y');
         }
 
         $data = $query
@@ -137,7 +137,7 @@ class ReportController extends Controller
         if(Auth::user()->usertype == 'Owner'){
             $data = DB::table('v_banks')->get();
         }else{
-            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+            $data = DB::table('v_banks')->where('bank_penampung','!=','Y')->get();
         }
         return view('reports.pengeluaransel', ['bank' => $data]);
     }
@@ -154,7 +154,7 @@ class ReportController extends Controller
         }
 
         if(Auth::user()->usertype <> 'Owner'){
-            $query->where('bank_type', '!=','Penampung');
+            $query->where('bank_penampung', '!=','Y');
         }
 
         $data = $query
@@ -168,7 +168,7 @@ class ReportController extends Controller
         if(Auth::user()->usertype == 'Owner'){
             $data = DB::table('v_banks')->get();
         }else{
-            $data = DB::table('v_banks')->where('bank_type','!=','Penampung')->get();
+            $data = DB::table('v_banks')->where('bank_penampung','!=','Y')->get();
         }
         return view('reports.depositsel', ['bank' => $data]);
     }
@@ -188,7 +188,7 @@ class ReportController extends Controller
         }
 
         if(Auth::user()->usertype <> 'Owner'){
-            $query->where('bank_type', '!=','Penampung');
+            $query->where('bank_penampung', '!=','Y');
         }
 
         $data = $query

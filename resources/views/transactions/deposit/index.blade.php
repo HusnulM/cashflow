@@ -114,7 +114,7 @@
                                 <label for="rekening">Rekening Tujuan Pembayaran</label>
                                 <select name="rekening" id="rekening" class="form-control" required>
                                     @foreach($bank as $b)
-                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bankname }} - {{ $b->bank_accountnumber }}</option>
+                                    <option value="{{ $b->bank_accountnumber }}">{{ $b->bankid }} - {{ $b->bank_accountname }} - {{ $b->bank_accountnumber }}</option>
                                     @endforeach
                                 </select>
                             </div>

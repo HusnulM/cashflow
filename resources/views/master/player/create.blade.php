@@ -89,7 +89,7 @@
                             <div class="col-lg-12 col-md-12 col-sm-12">
                                 <div class="form-group">
                                     <label for="namabank">Nama BANK</label>
-                                    <input type="text" name="namabank" class="form-control" autocomplete="off" required>
+                                    <input type="text" name="namabank" id="namabank" class="form-control" autocomplete="off" required>
                                 </div>
                             </div>                     
                             <div class="col-lg-12 col-md-12 col-sm-12">
@@ -114,4 +114,17 @@
         </div>
     </div>    
 </form>
+@endsection
+
+@section('additional-js')
+<script>
+    $(function(){
+        $('#kodebank').on('change', function(){
+            var namaBank = document.getElementById("kodebank").options[document.getElementById("kodebank").selectedIndex].text;
+            const myArray = namaBank.split("-");
+            console.log(myArray[1]);
+            $('#namabank').val(myArray[1]);
+        })
+    });
+</script>
 @endsection

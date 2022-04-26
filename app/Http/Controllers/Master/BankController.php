@@ -29,16 +29,37 @@ class BankController extends Controller
     }
 
     public function save(Request $request){
+        // return $request;
         DB::beginTransaction();
         try{
+
+            $bankWD = 'N';
+            $bankDepo = 'N';
+            $bankPenampung = 'N';
+
+            if(isset($request->cbWD)){
+                $bankWD = 'Y';
+            }
+
+            if(isset($request->cbDepo)){
+                $bankDepo = 'Y';
+            }
+
+            if(isset($request->cbPenampung)){
+                $bankPenampung = 'Y';
+            }
+
             $output = array();
             $menuroledata = array(
                 'bankid'             => $request['kodebank'],
                 'bankname'           => $request['namabank'],
                 'bank_accountnumber' => $request['norek'],
                 'bank_accountname'   => $request['atasnama'],
-                'bank_type'          => $request['tipebank'],
+                'bank_type'          => null,
                 'opening_balance'    => $request['saldoawal'],
+                'bank_wd'            => $bankWD,
+                'bank_depo'          => $bankDepo,
+                'bank_penampung'     => $bankPenampung,
                 'createdby'          => Auth::user()->name,
                 'created_at'         => now()
             );
@@ -54,6 +75,7 @@ class BankController extends Controller
                 'debit'         => 0,
                 'credit'        => $request['saldoawal'],
                 'balance'       => $request['saldoawal'],
+                
                 'createdby'     => Auth::user()->name,
                 'created_at'    => now()
             );
@@ -75,30 +97,48 @@ class BankController extends Controller
     public function update(Request $request){
         DB::beginTransaction();
         try{
+            $bankWD = 'N';
+            $bankDepo = 'N';
+            $bankPenampung = 'N';
+
+            if(isset($request->cbWD)){
+                $bankWD = 'Y';
+            }
+
+            if(isset($request->cbDepo)){
+                $bankDepo = 'Y';
+            }
+
+            if(isset($request->cbPenampung)){
+                $bankPenampung = 'Y';
+            }
             DB::table('banks')->where('id', $request['idbank'])->update([
                 'bankid'             => $request['kodebank'],
                 'bankname'           => $request['namabank'],
                 'bank_accountnumber' => $request['norek'],
                 'bank_accountname'   => $request['atasnama'],
-                'bank_type'          => $request['tipebank'],
-                'opening_balance'    => $request['saldoawal'],
+                'bank_type'          => null,
+                // 'opening_balance'    => $request['saldoawal'],
+                'bank_wd'            => $bankWD,
+                'bank_depo'          => $bankDepo,
+                'bank_penampung'     => $bankPenampung,
                 'updated_at'         => now()
             ]);
 
-            $saldoAwal = array();
-            $insertSaldo = array(
-                'transdate'     => now(),
-                'note'          => 'Saldo awal',
-                'from_acc'      => '',
-                'to_acc'        => $request['norek'],
-                'debit'         => 0,
-                'credit'        => $request['saldoawal'],
-                'balance'       => $request['saldoawal'],
-                'createdby'     => Auth::user()->name,
-                'created_at'    => now()
-            );
-            array_push($saldoAwal, $insertSaldo);
-            insertOrUpdate($saldoAwal,'cashflows');
+            // $saldoAwal = array();
+            // $insertSaldo = array(
+            //     'transdate'     => now(),
+            //     'note'          => 'Saldo awal',
+            //     'from_acc'      => '',
+            //     'to_acc'        => $request['norek'],
+            //     'debit'         => 0,
+            //     'credit'        => $request['saldoawal'],
+            //     'balance'       => $request['saldoawal'],
+            //     'createdby'     => Auth::user()->name,
+            //     'created_at'    => now()
+            // );
+            // array_push($saldoAwal, $insertSaldo);
+            // insertOrUpdate($saldoAwal,'cashflows');
             
             DB::commit();
             return Redirect::to("/master/bank")->withSuccess('Master Bank diubah');

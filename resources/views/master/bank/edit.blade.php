@@ -77,7 +77,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="namabank">Nama Bank</label>
-                                <input type="text" name="namabank" class="form-control" value="{{ $data->bankname }}" autocomplete="off" required>
+                                <input type="text" name="namabank" id="namabank" class="form-control" value="{{ $data->bankname }}" autocomplete="off" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -103,12 +103,49 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="tipebank">Tipe Bank</label>
-                                <select name="tipebank" id="tipebank" class="form-control">
+                                <!-- <select name="tipebank" id="tipebank" class="form-control">
                                     <option value="{{ $data->bank_type }}">{{ $data->bank_type }}</option>
                                     <option value="Depo">Depo</option>
                                     <option value="WD">WD</option>
                                     <option value="Penampung">Penampung</option>
-                                </select>
+                                </select> -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- checkbox -->
+                                        <div class="form-group clearfix">
+                                            <div class="icheck-primary d-inline" style="margin-right:25px;">
+                                                @if( $data->bank_wd == 'Y' )
+                                                <input type="checkbox" checked name="cbWD" id="cbWD">
+                                                @else
+                                                <input type="checkbox" name="cbWD" id="cbWD">
+                                                @endif
+                                                <label for="cbWD">WD
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline" style="margin-right:15px;">
+                                                @if( $data->bank_depo == 'Y' )
+                                                <input type="checkbox" checked name="cbDepo" id="cbDepo">
+                                                @else
+                                                <input type="checkbox" name="cbDepo" id="cbDepo">
+                                                @endif
+                                                
+                                                <label for="cbDepo">Depo
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline">
+                                                <!-- <input type="checkbox" name="cbPenampung" id="cbPenampung"> -->
+                                                @if( $data->bank_penampung == 'Y' )
+                                                <input type="checkbox" checked name="cbPenampung" id="cbPenampung">
+                                                @else
+                                                <input type="checkbox" name="cbPenampung" id="cbPenampung">
+                                                @endif
+                                                <label for="cbPenampung">
+                                                Penampung
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>                        
                     </div>
@@ -120,4 +157,17 @@
         </div>
     </div>    
 </form>
+@endsection
+
+@section('additional-js')
+<script>
+    $(function(){
+        $('#kodebank').on('change', function(){
+            var namaBank = document.getElementById("kodebank").options[document.getElementById("kodebank").selectedIndex].text;
+            const myArray = namaBank.split("-");
+            console.log(myArray[1]);
+            $('#namabank').val(myArray[1]);
+        })
+    });
+</script>
 @endsection

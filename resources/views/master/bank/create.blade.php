@@ -76,7 +76,7 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="namabank">Nama Bank</label>
-                                <input type="text" name="namabank" class="form-control" autocomplete="off" required>
+                                <input type="text" name="namabank" id="namabank" class="form-control" autocomplete="off" required>
                             </div>
                         </div>
                         <div class="col-lg-4 col-md-6 col-sm-12">
@@ -102,12 +102,35 @@
                         <div class="col-lg-4 col-md-6 col-sm-12">
                             <div class="form-group">
                                 <label for="tipebank">Tipe Bank</label>
-                                <select name="tipebank" id="tipebank" class="form-control" required>
+                                <!-- <select name="tipebank" id="tipebank" class="form-control" required>
                                     <option value=""></option>
                                     <option value="Depo">Depo</option>
                                     <option value="WD">WD</option>
                                     <option value="Penampung">Penampung</option>
-                                </select>
+                                </select> -->
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <!-- checkbox -->
+                                        <div class="form-group clearfix">
+                                            <div class="icheck-primary d-inline" style="margin-right:25px;">
+                                                <input type="checkbox" checked name="cbWD" id="cbWD">
+                                                <label for="cbWD">WD
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline" style="margin-right:15px;">
+                                                <input type="checkbox" name="cbDepo" id="cbDepo">
+                                                <label for="cbDepo">Depo
+                                                </label>
+                                            </div>
+                                            <div class="icheck-primary d-inline">
+                                                <input type="checkbox" name="cbPenampung" id="cbPenampung">
+                                                <label for="cbPenampung">
+                                                Penampung
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>                        
                     </div>
@@ -119,4 +142,17 @@
         </div>
     </div>    
 </form>
+@endsection
+
+@section('additional-js')
+<script>
+    $(function(){
+        $('#kodebank').on('change', function(){
+            var namaBank = document.getElementById("kodebank").options[document.getElementById("kodebank").selectedIndex].text;
+            const myArray = namaBank.split("-");
+            console.log(myArray[1]);
+            $('#namabank').val(myArray[1]);
+        })
+    });
+</script>
 @endsection
