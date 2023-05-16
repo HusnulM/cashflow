@@ -66,11 +66,12 @@ class ReportController extends Controller
     }
 
     public function reportMutasi(){
-        if(Auth::user()->usertype == 'Owner'){
-            $data = DB::table('v_banks')->get();
-        }else{
-            $data = DB::table('v_banks')->where('bank_penampung','N')->get();
-        }
+        // if(Auth::user()->usertype == 'Owner'){
+        //     $data = DB::table('v_banks')->get();
+        // }else{
+        //     $data = DB::table('v_banks')->where('bank_penampung','N')->get();
+        // }
+        $data = DB::table('v_banks')->get();
         
         return view('reports.mutasisel', ['bank' => $data]);
     }
@@ -89,9 +90,9 @@ class ReportController extends Controller
             $query->where('transdate', $enddate);
         }
 
-        if(Auth::user()->usertype <> 'Owner'){
-            $query->where('bank_penampung','N');
-        }
+        // if(Auth::user()->usertype <> 'Owner'){
+        //     $query->where('bank_penampung','N');
+        // }
 
         $data = $query
                 ->orderBy('to_acc','ASC')

@@ -68,7 +68,7 @@
                                 <th>No.</th>
                                 <th style="width:100px;">Tanggal</th>
                                 <th>Keterangan</th>
-                                <th>No. Rekening</th>
+                                <!-- <th>No. Rekening</th> -->
                                 <th>Debit</th>
                                 <th>Kredit</th>
                                 <th>Saldo Akhir</th>
@@ -79,7 +79,7 @@
                                     <td>{{$key+1}}</td>
                                     <td>{{ date('d-m-Y',strtotime($d->transdate)) }}</td>
                                     <td>{{ $d->note }}</td>
-                                    <td>{{ $d->to_acc }}</td>
+                                    <!-- <td>{{ $d->to_acc }}</td> -->
                                     <td style="text-align:right;">{{ number_format($d->debit,0,'.',',') }}</td>
                                     <td style="text-align:right;">{{ number_format($d->credit,0,'.',',') }}</td>
                                     <td style="text-align:right;">{{ number_format($d->balance,0,'.',',') }}</td>
@@ -102,6 +102,7 @@
 <script>
     $(function(){
         $('#tbl-users').DataTable({
+            dom: 'Bfrtip',
             // "paging": true,
             // "lengthChange": false,
             // "searching": false,

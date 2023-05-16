@@ -169,6 +169,6 @@
                 ]  
         });
 
-        });
+    });
 </script>
 @endsection
