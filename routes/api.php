@@ -17,3 +17,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::get('/s4/listdoc',        'S4\UploadController@listFile'); 
+Route::post('/s4/uploaddoc',     'S4\UploadController@save'); 
